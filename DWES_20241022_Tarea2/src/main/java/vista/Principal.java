@@ -1,4 +1,4 @@
-package main;
+package vista;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,12 +44,19 @@ public class Principal {
 			
 			con = m.getConnection();
 			
-			String sql = "INSERT INTO plantas(codigo, nombrecomun, nombreCientifico) VALUES ("+planta.getCodigo()+","+planta.getNombreComun()+","+planta.getNombreCientifico()+")";
+			String sql = "INSERT INTO plantas(codigo, nombrecomun, nombreCientifico) VALUES (?, ?, ?)";
 			
 			PreparedStatement ps = con.prepareStatement(sql);
-			ps.execute();
-			
-			con.close();
+			 // Establecer los parámetros del PreparedStatement
+		    ps.setString(1, codigo);          // Reemplaza 'codigo' con tu variable
+		    ps.setString(2, nombreComun);      // Reemplaza 'nombreComun' con tu variable
+		    ps.setString(3, nombreCientifico); // Reemplaza 'nombreCientifico' con tu variable
+
+		    // Ejecutar la inserción
+		    ps.executeUpdate();
+
+		    // Opcionalmente, puedes cerrar el PreparedStatement
+		    ps.close();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
