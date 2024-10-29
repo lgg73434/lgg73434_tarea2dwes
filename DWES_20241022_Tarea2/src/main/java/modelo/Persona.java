@@ -2,24 +2,24 @@ package modelo;
 
 public class Persona {
 	
-	private long id;
+	private Long id;
 	private String nombre;
 	private String email;
 	
 	public Persona() {
 	}
 
-	public Persona(long id, String nombre, String email) {
+	public Persona(Long id, String nombre, String email) {
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -43,7 +43,7 @@ public class Persona {
 	public String toString() {
 		return "Persona [id=" + id + ", nombre=" + nombre + ", email=" + email + "]";
 	}
-	
+
 	
 	
 

@@ -4,24 +4,28 @@ import java.time.LocalDate;
 
 public class Mensaje {
 	
-	private long id;
+	private Long id;
 	private LocalDate fechaHora;
 	private String mensaje;
+	private Long idPersona;
+	private Long idEjemplar;
 	
 	public Mensaje() {
 	}
 
-	public Mensaje(long id, LocalDate fechaHora, String mensaje) {
+	public Mensaje(Long id, LocalDate fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
 		this.id = id;
 		this.fechaHora = fechaHora;
 		this.mensaje = mensaje;
+		this.idPersona = idPersona;
+		this.idEjemplar = idEjemplar;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -41,10 +45,30 @@ public class Mensaje {
 		this.mensaje = mensaje;
 	}
 
+	public Long getIdPersona() {
+		return idPersona;
+	}
+
+	public void setIdPersona(Long idPersona) {
+		this.idPersona = idPersona;
+	}
+
+	public Long getIdEjemplar() {
+		return idEjemplar;
+	}
+
+	public void setIdEjemplar(Long idEjemplar) {
+		this.idEjemplar = idEjemplar;
+	}
+
 	@Override
 	public String toString() {
-		return "Mensaje [id=" + id + ", fechaHora=" + fechaHora + ", mensaje=" + mensaje + "]";
+		return "Mensaje [id=" + id + ", fechaHora=" + fechaHora + ", mensaje=" + mensaje + ", idPersona=" + idPersona
+				+ ", idEjemplar=" + idEjemplar + "]";
 	}
+
+	
+	
 	
 	
 
