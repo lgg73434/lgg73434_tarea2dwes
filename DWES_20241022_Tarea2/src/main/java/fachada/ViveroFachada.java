@@ -1,8 +1,22 @@
 package fachada;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+import modelo.Planta;
+import servicios.*;;
+
 public class ViveroFachada {
 	
 	private static ViveroFachada portalVivero;
+	
+	ServiciosFactory svFactory = ServiciosFactory.getServicios();
+	
+	ServiciosPlanta svPlanta = svFactory.getServiciosPlanta();
+	ServiciosEjemplar svEjemplar = svFactory.getServiciosEjemplar();
+	ServiciosPersona svPersona = svFactory.getServiciosPersona();
+	ServiciosCredenciales svCredenciales = svFactory.getServiciosCredenciales();
+	ServiciosMensaje svMensaje = svFactory.getServiciosMensaje();
 	
 	public static ViveroFachada getPortal() {
 		if (portalVivero==null)
@@ -11,11 +25,50 @@ public class ViveroFachada {
 	}
 	
 	public void mostrarMenuPrincipal() {
-		System.out.println("\nSeleccione una opción:");
-		System.out.println("1.  Ver plantas (Modo invitado)");
-		System.out.println("2.  Login");
-		System.out.println("3.  Salir");
+		
+		
+		try (Scanner scanner = new Scanner(System.in)) {
+			
+			System.out.println("*** ¡¡Bienvenido a Vivero Gestión!! ***\n");
+
+			int opcion = 0;
+			do {
+				System.out.println("\nSeleccione una opción:");
+				System.out.println("1.  Ver plantas (Modo invitado)");
+				System.out.println("2.  Login");
+				System.out.println("3.  Salir");
+				
+				 try {
+                     opcion = scanner.nextInt();
+                 } catch (InputMismatchException e) {
+                     System.out.println("Opción no válida. Por favor, introduce un número entero.");
+                     scanner.next(); // Limpiar el buffer de entrada
+                     continue; // Volver a pedir la opción
+                 }
+
+				switch (opcion) {
+				case 1:
+					if(svPlanta.mostrarPlantas().size() == 0) {
+						System.out.println("No hay plantas registradas.");
+					}else {
+						for (Planta p : svPlanta.mostrarPlantas()) {
+							System.out.println(p);
+						}
+					}
+					break;
+				case 2:
+					//Login
+					break;
+				case 3:
+					System.out.println("¡Hasta pronto!");
+					break;
+				default:
+					System.out.println("Opcion incorrecta.");
+				}
+			} while (opcion != 3);
+		}
 	}
+	
 	
 	public void mostrarMenuPersonal() {
 		System.out.println("\nSeleccione una opción:");
@@ -23,6 +76,7 @@ public class ViveroFachada {
 		System.out.println("2.  Gestionar mensajes");
 		System.out.println("3.  Cerrar sesión");
 	}
+	
 	
 	public void mostrarMenuAdministrador(){
 		System.out.println("\nSeleccione una opción:");

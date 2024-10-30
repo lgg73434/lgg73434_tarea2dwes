@@ -14,7 +14,13 @@ public class PlantaDAO {
 	
 	private Connection connection;
 
-	
+	public PlantaDAO(Connection connection) {
+		this.connection = connection;
+	}
+
+
+
+
 	public int insertarPlanta(Planta planta) {
 		int result = 0;
 		
@@ -35,7 +41,7 @@ public class PlantaDAO {
 	}
 	
 	
-	public int actualizarPlanta(Planta planta, Connection connection) {
+	public int actualizarPlanta(Planta planta) {
 		int result = 0;
 		
 		String query = "UPDATE Planta SET nombreComun = ?, nombreCientifico = ? WHERE codigo = ?";
@@ -54,9 +60,9 @@ public class PlantaDAO {
 	}
 	
 	
-	public List<Planta> getAll(Connection connection) throws SQLException {
+	public List<Planta> getAll(){
 		
-		String sql = "SELECT * FROM plantas";
+		String sql = "SELECT * FROM plantas order by nombreComun ASC";
 		List<Planta> resul = new ArrayList<Planta>();
 		
 		try {

@@ -4,11 +4,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+
+import dao.*;
 
 public class ConexionBD {
 	
@@ -47,9 +48,27 @@ public class ConexionBD {
 		}
 
 		
-	    public Connection getConnection() {
-	        return connection;
-	    }
+		
+		public PlantaDAO getPlantaDao() {
+			return new PlantaDAO(connection);
+		}
+		
+		public EjemplarDAO getEjemplarDao() {
+			return new EjemplarDAO(connection);
+		}
+		
+		public PersonaDAO getPersonaDao() {
+			return new PersonaDAO(connection);
+		}
+		
+		public CredencialesDAO getCredencialesDao() {
+			return new CredencialesDAO(connection);
+		}
+		
+		public MensajeDAO getMensajeDao() {
+			return new MensajeDAO(connection);
+		}
+
 
 
 }
