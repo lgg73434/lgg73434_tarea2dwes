@@ -1,10 +1,12 @@
 package principal;
 
 import java.sql.Connection;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import conexionBD.ConexionBD;
 import fachada.ViveroFachada;
+import servicios.ServiciosPlanta;
 
 public class Principal {
 
@@ -19,18 +21,26 @@ public class Principal {
 		}
 
 		ViveroFachada portalVivero = ViveroFachada.getPortal();
+		
 
-		try (Scanner in = new Scanner(System.in)) {
-			System.out.println("Programa de gestion de un invernadero");
+		try (Scanner scanner = new Scanner(System.in)) {
+			System.out.println("*** ¡¡Bienvenido a Vivero Gestión!! ***\n");
 
 			int opcion = 0;
 			do {
 				portalVivero.mostrarMenuPrincipal();
-				opcion = in.nextInt();
+				
+				 try {
+                     opcion = scanner.nextInt();
+                 } catch (InputMismatchException e) {
+                     System.out.println("Opción no válida. Por favor, introduce un número entero.");
+                     scanner.next(); // Limpiar el buffer de entrada
+                     continue; // Volver a pedir la opción
+                 }
 
 				switch (opcion) {
 				case 1:
-
+					
 					break;
 				case 2:
 					
