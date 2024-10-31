@@ -46,7 +46,6 @@ public class ConexionBD {
 				conexionBD = new ConexionBD();
 			return conexionBD;
 		}
-
 		
 		
 		public PlantaDAO getPlantaDao() {
@@ -68,6 +67,15 @@ public class ConexionBD {
 		public MensajeDAO getMensajeDao() {
 			return new MensajeDAO(connection);
 		}
+		
+
+
+
+
+
+
+		
+		
 
 
 

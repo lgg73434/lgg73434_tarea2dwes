@@ -1,12 +1,7 @@
 package principal;
 
-import java.sql.Connection;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
-import conexionBD.ConexionBD;
 import fachada.ViveroFachada;
-import servicios.ServiciosPlanta;
+
 
 public class Principal {
 
@@ -14,7 +9,7 @@ public class Principal {
 
 		ViveroFachada portalVivero = ViveroFachada.getPortal();
 		
-		portalVivero.mostrarMenuPrincipal();
+		portalVivero.iniciarPrograma();
 				
 
 

@@ -24,7 +24,7 @@ public class PlantaDAO {
 	public int insertarPlanta(Planta planta) {
 		int result = 0;
 		
-		String query = "INSERT INTO Planta (codigo, nombreComun, nombreCientifico) VALUES (?, ?, ?)";
+		String query = "INSERT INTO plantas (codigo, nombreComun, nombreCientifico) VALUES (?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, planta.getCodigo().toUpperCase());
             ps.setString(2, planta.getNombreComun());
@@ -44,7 +44,7 @@ public class PlantaDAO {
 	public int actualizarPlanta(Planta planta) {
 		int result = 0;
 		
-		String query = "UPDATE Planta SET nombreComun = ?, nombreCientifico = ? WHERE codigo = ?";
+		String query = "UPDATE plantas SET nombreComun = ?, nombreCientifico = ? WHERE codigo = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, planta.getNombreComun());
             ps.setString(2, planta.getNombreCientifico());

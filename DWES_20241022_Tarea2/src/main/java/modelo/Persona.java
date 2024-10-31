@@ -6,7 +6,13 @@ public class Persona {
 	private String nombre;
 	private String email;
 	
+	
 	public Persona() {
+	}
+
+	public Persona(String nombre, String email) {
+		this.nombre = nombre;
+		this.email = email;
 	}
 
 	public Persona(Long id, String nombre, String email) {

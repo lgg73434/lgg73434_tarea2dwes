@@ -10,7 +10,15 @@ public class Mensaje {
 	private Long idPersona;
 	private Long idEjemplar;
 	
+	
 	public Mensaje() {
+	}
+
+	public Mensaje(LocalDate fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
+		this.fechaHora = fechaHora;
+		this.mensaje = mensaje;
+		this.idPersona = idPersona;
+		this.idEjemplar = idEjemplar;
 	}
 
 	public Mensaje(Long id, LocalDate fechaHora, String mensaje, Long idPersona, Long idEjemplar) {

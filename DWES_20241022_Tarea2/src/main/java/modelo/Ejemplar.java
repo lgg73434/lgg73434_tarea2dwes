@@ -5,7 +5,12 @@ public class Ejemplar {
 	private Long id;
 	private String nombre;
 	
+
 	public Ejemplar() {
+	}
+
+	public Ejemplar(String nombre) {
+		this.nombre = nombre;
 	}
 
 	public Ejemplar(Long id, String nombre) {
