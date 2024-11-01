@@ -3,12 +3,16 @@ package fachada;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import conexionBD.SesionActiva;
 import modelo.Planta;
-import servicios.*;;
+import servicios.*;
+import utilidades.Validar;;
 
 public class ViveroFachada {
 
 	private static ViveroFachada portalVivero;
+	Scanner scanner = new Scanner(System.in);
+	SesionActiva sesion = SesionActiva.getSesionActiva();
 
 	ServiciosFactory svFactory = ServiciosFactory.getServicios();
 
@@ -27,12 +31,11 @@ public class ViveroFachada {
 	public void iniciarPrograma() {
 		System.out.println("*** ¡¡Bienvenido a Vivero Gestión!! ***");
 		mostrarMenuPrincipal();
+		scanner.close();
 	}
 
 	
 	public void mostrarMenuPrincipal() {
-
-		try (Scanner scanner = new Scanner(System.in)) {
 
 			int opcion = 0;
 			do {
@@ -59,22 +62,39 @@ public class ViveroFachada {
 						}
 					}
 					break;
+					
 				case 2:
-					// Login
+					boolean valido = false;
+					do {
+						System.out.print("Introduce tu usuario: ");
+						String usuario = scanner.next();
+						System.out.print("Introduce tu contraseña: ");
+						String contraseña = scanner.next();
+						if (svCredenciales.login(usuario, contraseña)) {
+							valido = true;
+							sesion.setUsuario(usuario);
+							if (usuario.equals("admin")) {
+								mostrarMenuAdministrador();		
+							} else {
+								mostrarMenuPersonal();
+							}
+						} else {
+							System.out.println("\nERROR: Usuario o contraseña incorrectos\n");
+						}
+					}while(!valido);
 					break;
+					
 				case 3:
-					System.out.println("¡Hasta pronto!");
+					System.out.println("¡Adios!");
 					break;
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 3);
-		}
 	}
 
 	
 	public void mostrarMenuPersonal() {
-		try (Scanner scanner = new Scanner(System.in)) {
 
 			int opcion = 0;
 			do {
@@ -100,32 +120,29 @@ public class ViveroFachada {
 					mostrarMenuGestionarMensajes();
 					break;
 				case 3:
-					// AQUI FALTA HACER EL CIERRE DE SESIÓN
-					mostrarMenuPrincipal();
-					break;
+					sesion.setUsuario(null);
+					return;
 				case 4:
-					// AQUI FALTA HACER EL CIERRE DE SESIÓN
-					System.out.println("¡Hasta pronto!");
-					break;
+					System.out.println("¡Adios!");
+					System.exit(0);
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 4);
-		}
 
 	}
 
 	
 	public void mostrarMenuAdministrador() {
-		try (Scanner scanner = new Scanner(System.in)) {
-
+		
 			int opcion = 0;
+			
 			do {
 				System.out.println("\nSeleccione una opción:");
 				System.out.println("1.  Gestionar plantas");
 				System.out.println("2.  Gestionar ejemplares");
 				System.out.println("3.  Gestionar mensajes");
-				System.out.println("4.  Registrar persona");
+				System.out.println("4.  Registrar usuario");
 				System.out.println("5.  Cerrar sesión");
 				System.out.println("6.  Cerrar sesión y salir");
 
@@ -148,26 +165,81 @@ public class ViveroFachada {
 					mostrarMenuGestionarMensajes();
 					break;
 				case 4:
-					// PEDIR DATOS PARA REGISTRAR PERSONA
+					boolean valido = false;
+					System.out.println("*** Registrar nuevo usuario ***");
+					
+				    String nombre = "";
+				    String email = "";
+				    String nombreUsuario = "";
+				    String contrasena = "";
+
+				    // Solicitar todos los datos
+				    System.out.println("Introduce un nombre: ");
+				    nombre = scanner.next();
+				    
+				    System.out.println("Introduce un email:");
+				    email = scanner.next();
+				    
+				    System.out.println("Introduce nombre de usuario:");
+				    nombreUsuario = scanner.next();
+				    
+				    System.out.println("Introduce una contraseña:");
+				    contrasena = scanner.next();
+
+				 // Validar cada campo
+				    while (true) {
+				        boolean isNombreValido = Validar.validarNombre(nombre);
+				        boolean isEmailValido = Validar.validarEmail(email);
+				        boolean isEmailUnico = svPersona.existeEmail(email);
+				        boolean isNombreUsuarioValido = Validar.validarNombreUsuario(nombreUsuario);
+				        boolean isUsuarioUnico = svCredenciales.existeUsuario(nombreUsuario);
+
+				        boolean todosValidos = true;
+
+				        if (!isNombreValido) {
+				            System.out.println("Introducidos caracteres no válidos en el nombre. Intenta de nuevo:");
+				            nombre = scanner.next();
+				            todosValidos = false; 
+				        } 
+				        if (!isEmailValido) {
+				            System.out.println("Formato de email no válido. Intenta de nuevo:");
+				            email = scanner.next(); 
+				            todosValidos = false;
+				        }
+				        
+				        if (!isNombreUsuarioValido) {
+				            System.out.println("El nombre de usuario ya existe o no es válido. Intenta de nuevo:");
+				            nombreUsuario = scanner.next(); 
+				            todosValidos = false; 
+				        } 
+				        
+				        if (!isNombreUsuarioValido) {
+				            System.out.println("El nombre de usuario ya existe o no es válido. Intenta de nuevo:");
+				            nombreUsuario = scanner.next(); 
+				            todosValidos = false; 
+				        } 
+				        
+				        if (todosValidos) {
+				            break;
+				        }
+				    }
+				    
+				    
 					break;
 				case 5:
-					// AQUI FALTA HACER EL CIERRE DE SESIÓN
-					mostrarMenuPrincipal();
-					break;
+					sesion.setUsuario(null);
+					return;
 				case 6:
-					// AQUI FALTA HACER EL CIERRE DE SESIÓN
-					System.out.println("¡Hasta pronto!");
-					break;
+					System.out.println("¡Adios!");
+					System.exit(0);
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 6);
-		}
 	}
 
 	
 	public void mostrarMenuGestionarPlantas() {
-		try (Scanner scanner = new Scanner(System.in)) {
 
 			int opcion = 0;
 			do {
@@ -192,19 +264,17 @@ public class ViveroFachada {
 					// modificar una planta
 					break;
 				case 3:
-					mostrarMenuAdministrador();
-					break;
+					//Vuelve al menú anterior que le hizo la llamada
+					return;
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 3);
-		}
 
 	}
 
 	
 	public void mostrarMenuGestionarEjemplares() {
-		try (Scanner scanner = new Scanner(System.in)) {
 
 			int opcion = 0;
 			do {
@@ -233,22 +303,23 @@ public class ViveroFachada {
 					// Ver mensajes de seguimiento de un ejemplar
 					break;
 				case 4:
+					return;
+					/*
 					// si es usuario personal:
 					mostrarMenuPersonal();
 
 					// si es admin
 					mostrarMenuAdministrador();
 					break;
+					*/
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 4);
-		}
 	}
 
 	
 	public void mostrarMenuGestionarMensajes() {
-		try (Scanner scanner = new Scanner(System.in)) {
 
 			int opcion = 0;
 			do {
@@ -281,18 +352,27 @@ public class ViveroFachada {
 					// buscar mensajes por tipo planta
 					break;
 				case 5:
+					return;
+					/*
 					// si es usuario personal:
 					mostrarMenuPersonal();
 
 					// si es admin
 					mostrarMenuAdministrador();
 					break;
+					*/
 				default:
 					System.out.println("Opción incorrecta.");
 				}
 			} while (opcion != 5);
-		}
 
+	}
+
+	public void cerrarScanner() {
+		if (scanner != null) {
+            scanner.close(); // Cierra el Scanner cuando se termina de usar
+        }
+		
 	}
 
 }

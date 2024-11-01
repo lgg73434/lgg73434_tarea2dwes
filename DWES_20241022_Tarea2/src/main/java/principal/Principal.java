@@ -11,7 +11,8 @@ public class Principal {
 		
 		portalVivero.iniciarPrograma();
 				
-
+		// Cierra el Scanner después de que el programa termine
+        portalVivero.cerrarScanner(); // Método que cierra el Scanner
 
 	}
 
