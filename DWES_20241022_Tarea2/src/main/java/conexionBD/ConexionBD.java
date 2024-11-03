@@ -1,8 +1,7 @@
 package conexionBD;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -21,18 +20,22 @@ public class ConexionBD {
 			Properties prop = new Properties();
 			MysqlDataSource m = new MysqlDataSource();
 
-			 try (FileInputStream fis = new FileInputStream("src/main/resources/db.properties")) {
+			 //try (FileInputStream fis = new FileInputStream("src/main/resources/db.properties")) {
+			try (InputStream fis = getClass().getClassLoader().getResourceAsStream("db.properties")) {
+				
+				if (fis == null) {
+	                System.err.println("Archivo de configuración no encontrado en el classpath");
+	                return;
+	            }
 		           
 				prop.load(fis);
-
+				
 				m.setUrl(prop.getProperty("url"));
 				m.setUser(prop.getProperty("user"));
 				m.setPassword(prop.getProperty("password"));
 
 				connection = m.getConnection();
 
-			} catch (FileNotFoundException e) {
-				System.out.println("Error al acceder al archivo properties " + e.getMessage());
 			} catch (IOException e) {
 				System.out.println("Error al leer las propiedades del archivo properties" + e.getMessage());
 			} catch (SQLException e) {

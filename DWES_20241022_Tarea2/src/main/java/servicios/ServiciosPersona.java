@@ -12,6 +12,13 @@ public class ServiciosPersona {
 		conexion = ConexionBD.getCon();
 		personaDao = conexion.getPersonaDao();
 	}
+
+	public boolean isEmailRegistrado(String email) {
+		if(personaDao.isEmailRegistrado(email)) {
+			return true;
+		}
+		return false;
+	}
 	
 
 }

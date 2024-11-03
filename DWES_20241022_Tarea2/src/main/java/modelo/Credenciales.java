@@ -2,7 +2,7 @@ package modelo;
 
 public class Credenciales {
 	
-	private Long id;
+	private Long idPersona;
 	private String usuario;
 	private String password;
 	
@@ -16,17 +16,17 @@ public class Credenciales {
 	}
 
 	public Credenciales(Long id, String usuario, String password) {
-		this.id = id;
+		this.idPersona = id;
 		this.usuario = usuario;
 		this.password = password;
 	}
 
 	public Long getId() {
-		return id;
+		return idPersona;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.idPersona = id;
 	}
 
 	public String getUsuario() {
@@ -47,7 +47,7 @@ public class Credenciales {
 
 	@Override
 	public String toString() {
-		return "Credenciales [id=" + id + ", usuario=" + usuario + ", password=" + password + "]";
+		return "Credenciales [id=" + idPersona + ", usuario=" + usuario + ", password=" + password + "]";
 	}
 
 	

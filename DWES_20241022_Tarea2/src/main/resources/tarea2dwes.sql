@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-10-2024 a las 12:56:00
+-- Tiempo de generación: 03-11-2024 a las 22:22:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -37,7 +37,16 @@ CREATE TABLE `credenciales` (
 
 --
 -- RELACIONES PARA LA TABLA `credenciales`:
+--   `id`
+--       `personas` -> `id`
 --
+
+--
+-- Volcado de datos para la tabla `credenciales`
+--
+
+INSERT INTO `credenciales` (`id`, `usuario`, `password`) VALUES
+(1, 'admin', 'admin');
 
 -- --------------------------------------------------------
 
@@ -53,7 +62,7 @@ CREATE TABLE `ejemplares` (
 
 --
 -- RELACIONES PARA LA TABLA `ejemplares`:
---   `idplanta`
+--   `idPlanta`
 --       `plantas` -> `codigo`
 --
 
@@ -88,15 +97,19 @@ CREATE TABLE `mensajes` (
 CREATE TABLE `personas` (
   `id` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `credenciales` int(11) NOT NULL
+  `email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- RELACIONES PARA LA TABLA `personas`:
---   `credenciales`
---       `credenciales` -> `id`
 --
+
+--
+-- Volcado de datos para la tabla `personas`
+--
+
+INSERT INTO `personas` (`id`, `nombre`, `email`) VALUES
+(1, 'Admin', 'admin@vivero.es');
 
 -- --------------------------------------------------------
 
@@ -113,6 +126,14 @@ CREATE TABLE `plantas` (
 --
 -- RELACIONES PARA LA TABLA `plantas`:
 --
+
+--
+-- Volcado de datos para la tabla `plantas`
+--
+
+INSERT INTO `plantas` (`codigo`, `nombreComun`, `nombreCientifico`) VALUES
+('GIRASOL', 'Girasol', 'Girasolus'),
+('ROSA', 'Rosa', 'Rosaeum');
 
 --
 -- Índices para tablas volcadas
@@ -145,8 +166,7 @@ ALTER TABLE `mensajes`
 --
 ALTER TABLE `personas`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD KEY `fk_credenciales` (`credenciales`);
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indices de la tabla `plantas`
@@ -157,12 +177,6 @@ ALTER TABLE `plantas`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `credenciales`
---
-ALTER TABLE `credenciales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ejemplares`
@@ -180,17 +194,23 @@ ALTER TABLE `mensajes`
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
+-- Filtros para la tabla `credenciales`
+--
+ALTER TABLE `credenciales`
+  ADD CONSTRAINT `fk_idPersona` FOREIGN KEY (`id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `ejemplares`
 --
 ALTER TABLE `ejemplares`
-  ADD CONSTRAINT `fk_planta` FOREIGN KEY (`idplanta`) REFERENCES `plantas` (`codigo`);
+  ADD CONSTRAINT `fk_planta` FOREIGN KEY (`idPlanta`) REFERENCES `plantas` (`codigo`);
 
 --
 -- Filtros para la tabla `mensajes`
@@ -198,12 +218,6 @@ ALTER TABLE `ejemplares`
 ALTER TABLE `mensajes`
   ADD CONSTRAINT `fk_ejemplarMensaje` FOREIGN KEY (`idEjemplar`) REFERENCES `ejemplares` (`id`),
   ADD CONSTRAINT `fk_personaMensaje` FOREIGN KEY (`idPersona`) REFERENCES `personas` (`id`);
-
---
--- Filtros para la tabla `personas`
---
-ALTER TABLE `personas`
-  ADD CONSTRAINT `fk_credenciales` FOREIGN KEY (`credenciales`) REFERENCES `credenciales` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

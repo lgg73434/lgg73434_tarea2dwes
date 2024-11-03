@@ -69,11 +69,11 @@ public class ViveroFachada {
 						System.out.print("Introduce tu usuario: ");
 						String usuario = scanner.next();
 						System.out.print("Introduce tu contraseña: ");
-						String contraseña = scanner.next();
-						if (svCredenciales.login(usuario, contraseña)) {
+						String contrasena = scanner.next();
+						if (svCredenciales.login(usuario, contrasena)) {
 							valido = true;
 							sesion.setUsuario(usuario);
-							if (usuario.equals("admin")) {
+							if (usuario.equalsIgnoreCase("admin")) {
 								mostrarMenuAdministrador();		
 							} else {
 								mostrarMenuPersonal();
@@ -123,6 +123,7 @@ public class ViveroFachada {
 					sesion.setUsuario(null);
 					return;
 				case 4:
+					sesion.setUsuario(null);
 					System.out.println("¡Adios!");
 					System.exit(0);
 				default:
@@ -158,12 +159,15 @@ public class ViveroFachada {
 				case 1:
 					mostrarMenuGestionarPlantas();
 					break;
+					
 				case 2:
 					mostrarMenuGestionarEjemplares();
 					break;
+					
 				case 3:
 					mostrarMenuGestionarMensajes();
 					break;
+					
 				case 4:
 					boolean valido = false;
 					System.out.println("*** Registrar nuevo usuario ***");
@@ -190,31 +194,45 @@ public class ViveroFachada {
 				    while (true) {
 				        boolean isNombreValido = Validar.validarNombre(nombre);
 				        boolean isEmailValido = Validar.validarEmail(email);
-				        boolean isEmailUnico = svPersona.existeEmail(email);
+				        boolean isEmailRegistrado = svPersona.isEmailRegistrado(email);
 				        boolean isNombreUsuarioValido = Validar.validarNombreUsuario(nombreUsuario);
-				        boolean isUsuarioUnico = svCredenciales.existeUsuario(nombreUsuario);
+				        boolean isUsuarioRegistrado = svCredenciales.existeUsuario(nombreUsuario);
+				        boolean isContrasenaValida = Validar.validarContrasena(contrasena);
 
 				        boolean todosValidos = true;
 
 				        if (!isNombreValido) {
-				            System.out.println("Introducidos caracteres no válidos en el nombre. Intenta de nuevo:");
+				            System.out.println("Introducidos caracteres no válidos en el nombre.\nIntenta de nuevo:");
 				            nombre = scanner.next();
 				            todosValidos = false; 
 				        } 
+				        
 				        if (!isEmailValido) {
-				            System.out.println("Formato de email no válido. Intenta de nuevo:");
+				            System.out.println("Formato de email no válido.\nIntenta de nuevo:");
 				            email = scanner.next(); 
 				            todosValidos = false;
 				        }
 				        
+				        if (isEmailRegistrado) {
+				        	System.out.println("Email ya registrado en el sistema.\nIntenta de nuevo:");
+				        	email = scanner.next(); 
+				            todosValidos = false;
+				        }
+				        
 				        if (!isNombreUsuarioValido) {
-				            System.out.println("El nombre de usuario ya existe o no es válido. Intenta de nuevo:");
+				            System.out.println("El nombre de usuario no puede contener espacios.\nIntenta de nuevo:");
 				            nombreUsuario = scanner.next(); 
 				            todosValidos = false; 
 				        } 
 				        
-				        if (!isNombreUsuarioValido) {
-				            System.out.println("El nombre de usuario ya existe o no es válido. Intenta de nuevo:");
+				        if (isUsuarioRegistrado) {
+				            System.out.println("El nombre de usuario ya existe.\nIntenta de nuevo:");
+				            nombreUsuario = scanner.next(); 
+				            todosValidos = false; 
+				        } 
+				        
+				        if (!isContrasenaValida) {
+				            System.out.println("La contraseña debe tener entre 6 y 10 caracteres y no puede contener espacios.\nIntenta de nuevo:");
 				            nombreUsuario = scanner.next(); 
 				            todosValidos = false; 
 				        } 
@@ -222,14 +240,16 @@ public class ViveroFachada {
 				        if (todosValidos) {
 				            break;
 				        }
+				        
+				        // QUEDA HACER EL REGISTRO DE LAS CREDENCIALES Y LA PERSONA
 				    }
-				    
-				    
+				   
 					break;
 				case 5:
 					sesion.setUsuario(null);
 					return;
 				case 6:
+					sesion.setUsuario(null);
 					System.out.println("¡Adios!");
 					System.exit(0);
 				default:

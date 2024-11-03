@@ -21,7 +21,7 @@ public class CredencialesDAO {
 
 		String query = "INSERT INTO credenciales (usuario, password) VALUES (?, ?)";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
-			ps.setString(1, credenciales.getUsuario());
+			ps.setString(1, credenciales.getUsuario().toLowerCase());
 			ps.setString(2, credenciales.getPassword());
 
 			result = ps.executeUpdate();
@@ -35,7 +35,7 @@ public class CredencialesDAO {
 	}
 	
 	public Credenciales getCredencialesPorUsuario(String nombreUsuario) {
-		String query = "SELECT id FROM credenciales WHERE usuario = ?";
+		String query = "SELECT id FROM credenciales WHERE usuario = LOWER(?)";
 		
 	    try (PreparedStatement ps = connection.prepareStatement(query)) {
 	        ps.setString(1, nombreUsuario);
@@ -67,6 +67,23 @@ public class CredencialesDAO {
 			e.printStackTrace();
 		}
 		return false; 
+	}
+
+	public boolean isUsuarioRegistrado(String nombreUsuario) {
+		String query = "SELECT usuario FROM credenciales WHERE LOWER(usuario) = LOWER(?)";
+		
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        ps.setString(1, nombreUsuario);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            return rs.next(); // Si hay resultados, el usuario está registrado
+	        }
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return false;
 	}
 
 }

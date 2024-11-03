@@ -1,7 +1,5 @@
 package conexionBD;
 
-import servicios.ServiciosFactory;
-
 public class SesionActiva {
 
 	private static SesionActiva sesion;
