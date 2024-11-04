@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import conexionBD.ConexionBD;
 import modelo.Planta;
 
 public class PlantaDAO {
@@ -83,6 +82,23 @@ public class PlantaDAO {
 		}
 		
 		return resul;
+	}
+
+	public boolean isCodigoRegistrado(String codigo) {
+		 String query = "SELECT codigo FROM plantas WHERE codigo = ?";
+		    
+		    try (PreparedStatement ps = connection.prepareStatement(query)) {
+		        ps.setString(1, codigo.toUpperCase());
+		        
+		        try (ResultSet rs = ps.executeQuery()) {
+		            return rs.next(); // Retorna true si el codigo ya está registrado
+		        }
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    
+		    return false; 
 	}
 	
 	

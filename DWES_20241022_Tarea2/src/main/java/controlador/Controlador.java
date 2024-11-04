@@ -1,7 +1,5 @@
 package controlador;
 
-import controlador.*;
-
 
 public class Controlador {
 	

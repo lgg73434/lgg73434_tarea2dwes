@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import modelo.Credenciales;
-import modelo.Persona;
+
 
 public class CredencialesDAO {
 
@@ -35,7 +35,7 @@ public class CredencialesDAO {
 	}
 	
 	public Credenciales getCredencialesPorUsuario(String nombreUsuario) {
-		String query = "SELECT id FROM credenciales WHERE usuario = LOWER(?)";
+		String query = "SELECT * FROM credenciales WHERE usuario = LOWER(?)";
 		
 	    try (PreparedStatement ps = connection.prepareStatement(query)) {
 	        ps.setString(1, nombreUsuario);

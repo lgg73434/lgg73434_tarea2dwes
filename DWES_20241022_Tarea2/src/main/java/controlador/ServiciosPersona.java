@@ -1,13 +1,10 @@
 package controlador;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import conexionBD.ConexionBD;
 import dao.CredencialesDAO;
 import dao.PersonaDAO;
-import modelo.Credenciales;
-import modelo.Persona;
+
 
 public class ServiciosPersona {
 

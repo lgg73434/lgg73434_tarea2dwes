@@ -19,6 +19,18 @@ public class ServiciosPlanta {
 	public List<Planta> mostrarPlantas(){
 		return plantaDao.getAll();
 	}
+
+	public boolean existeCodigo(String codigo) {
+		return plantaDao.isCodigoRegistrado(codigo); 
+	}
+
+	public int registrarPlanta(Planta p) {
+		return plantaDao.insertarPlanta(p);
+	}
+	
+	public int actualizarPlanta(Planta p) {
+		return plantaDao.actualizarPlanta(p);
+	}
 	
 
 }

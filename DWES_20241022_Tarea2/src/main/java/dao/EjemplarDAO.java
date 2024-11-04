@@ -2,9 +2,11 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import modelo.Ejemplar;
+import modelo.Planta;
 
 
 
@@ -32,5 +34,41 @@ public class EjemplarDAO {
         
 		return result;
         
+	}
+	
+	public Ejemplar crearEjemplar(Planta p){
+		Ejemplar e=null;
+        String insertSQL = "INSERT INTO ejemplares (nombre, idPlanta) VALUES (?, ?)";
+        String updateSQL = "UPDATE ejemplares SET nombre = ? WHERE id = ?";
+
+        // Auto-generated keys nos permitirá recuperar el ID generado
+        try (PreparedStatement ps = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            
+            // Paso 1: Insertamos el ejemplar solo con el id_planta
+            ps.setString(1, p.getCodigo());
+            ps.setString(2, p.getCodigo());
+            ps.executeUpdate();
+
+            // Paso 2: Recuperamos el ID generado automáticamente
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    Long ejemplarId = generatedKeys.getLong(1);  // Obtiene el ID generado
+                    String nombreEjemplar = p.getCodigo() + "_" + ejemplarId;
+
+                    // Paso 3: Actualizamos el nombre del ejemplar con el id_planta y el id del ejemplar
+                    try (PreparedStatement ups = connection.prepareStatement(updateSQL)) {
+                        ups.setString(1, nombreEjemplar);
+                        ups.setLong(2, ejemplarId);
+                        ups.executeUpdate();
+                        
+                        e = new Ejemplar (ejemplarId, nombreEjemplar);
+                    }
+                } 
+            }
+        } catch (SQLException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
+        return e;
 	}
 }

@@ -1,11 +1,11 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Mensaje {
 	
 	private Long id;
-	private LocalDate fechaHora;
+	private LocalDateTime fechaHora;
 	private String mensaje;
 	private Long idPersona;
 	private Long idEjemplar;
@@ -14,14 +14,14 @@ public class Mensaje {
 	public Mensaje() {
 	}
 
-	public Mensaje(LocalDate fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
+	public Mensaje(LocalDateTime fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
 		this.fechaHora = fechaHora;
 		this.mensaje = mensaje;
 		this.idPersona = idPersona;
 		this.idEjemplar = idEjemplar;
 	}
 
-	public Mensaje(Long id, LocalDate fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
+	public Mensaje(Long id, LocalDateTime fechaHora, String mensaje, Long idPersona, Long idEjemplar) {
 		this.id = id;
 		this.fechaHora = fechaHora;
 		this.mensaje = mensaje;
@@ -37,11 +37,11 @@ public class Mensaje {
 		this.id = id;
 	}
 
-	public LocalDate getFechaHora() {
+	public LocalDateTime getFechaHora() {
 		return fechaHora;
 	}
 
-	public void setFechaHora(LocalDate fechaHora) {
+	public void setFechaHora(LocalDateTime fechaHora) {
 		this.fechaHora = fechaHora;
 	}
 

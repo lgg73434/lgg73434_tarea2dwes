@@ -20,4 +20,8 @@ public class Validar {
 		return contrasena != null && contrasena.length() >= 6 && contrasena.length() <= 10 && !contrasena.contains(" ");
 	}
 
+	public static boolean validarCodigo(String codigo) {
+		return codigo.matches("^[A-Za-z]{1,50}$");
+	}
+
 }
