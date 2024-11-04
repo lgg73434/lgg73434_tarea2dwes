@@ -20,7 +20,6 @@ public class ConexionBD {
 			Properties prop = new Properties();
 			MysqlDataSource m = new MysqlDataSource();
 
-			 //try (FileInputStream fis = new FileInputStream("src/main/resources/db.properties")) {
 			try (InputStream fis = getClass().getClassLoader().getResourceAsStream("db.properties")) {
 				
 				if (fis == null) {
@@ -37,9 +36,9 @@ public class ConexionBD {
 				connection = m.getConnection();
 
 			} catch (IOException e) {
-				System.out.println("Error al leer las propiedades del archivo properties" + e.getMessage());
+				System.err.println("Error al leer las propiedades del archivo properties" + e.getMessage());
 			} catch (SQLException e) {
-				System.out.println("Error al conectar con la base de datos " + e.getMessage());
+				System.err.println("Error al conectar con la base de datos " + e.getMessage());
 			}
 		}
 		
@@ -50,7 +49,6 @@ public class ConexionBD {
 			return conexionBD;
 		}
 		
-		
 		public PlantaDAO getPlantaDao() {
 			return new PlantaDAO(connection);
 		}
@@ -58,7 +56,7 @@ public class ConexionBD {
 		public EjemplarDAO getEjemplarDao() {
 			return new EjemplarDAO(connection);
 		}
-		
+
 		public PersonaDAO getPersonaDao() {
 			return new PersonaDAO(connection);
 		}

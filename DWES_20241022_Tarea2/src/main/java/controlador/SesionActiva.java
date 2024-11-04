@@ -1,4 +1,4 @@
-package conexionBD;
+package controlador;
 
 public class SesionActiva {
 

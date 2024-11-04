@@ -3,9 +3,7 @@ package fachada;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import conexionBD.SesionActiva;
-import modelo.Planta;
-import servicios.*;
+import controlador.*;
 import utilidades.Validar;;
 
 public class ViveroFachada {
@@ -14,13 +12,13 @@ public class ViveroFachada {
 	Scanner scanner = new Scanner(System.in);
 	SesionActiva sesion = SesionActiva.getSesionActiva();
 
-	ServiciosFactory svFactory = ServiciosFactory.getServicios();
+	Controlador serviciosControlador = Controlador.getServicios();
 
-	ServiciosPlanta svPlanta = svFactory.getServiciosPlanta();
-	ServiciosEjemplar svEjemplar = svFactory.getServiciosEjemplar();
-	ServiciosPersona svPersona = svFactory.getServiciosPersona();
-	ServiciosCredenciales svCredenciales = svFactory.getServiciosCredenciales();
-	ServiciosMensaje svMensaje = svFactory.getServiciosMensaje();
+	ServiciosPlanta svPlanta = serviciosControlador.getServiciosPlanta();
+	ServiciosEjemplar svEjemplar = serviciosControlador.getServiciosEjemplar();
+	ServiciosPersona svPersona = serviciosControlador.getServiciosPersona();
+	ServiciosCredenciales svCredenciales = serviciosControlador.getServiciosCredenciales();
+	ServiciosMensaje svMensaje = serviciosControlador.getServiciosMensaje();
 
 	public static ViveroFachada getPortal() {
 		if (portalVivero == null)
@@ -169,7 +167,6 @@ public class ViveroFachada {
 					break;
 					
 				case 4:
-					boolean valido = false;
 					System.out.println("*** Registrar nuevo usuario ***");
 					
 				    String nombre = "";
@@ -241,8 +238,14 @@ public class ViveroFachada {
 				            break;
 				        }
 				        
-				        // QUEDA HACER EL REGISTRO DE LAS CREDENCIALES Y LA PERSONA
+
 				    }
+				    
+			        if(svPersona.registrarPersona(nombre, email, nombreUsuario, contrasena)) {
+			        	System.out.println("Nuevo usuario registrado con éxito");
+			        } else {
+			        	System.out.println("Error al registrar al nuevo usuario.");
+			        }
 				   
 					break;
 				case 5:

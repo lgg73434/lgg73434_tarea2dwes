@@ -1,4 +1,4 @@
-package servicios;
+package controlador;
 
 public class ServiciosMensaje {
 

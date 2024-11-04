@@ -86,4 +86,17 @@ public class CredencialesDAO {
 	    return false;
 	}
 
+	public boolean insertarCredenciales(int idPersona, String nombreUsuario, String contrasena) {
+		 String sql = "INSERT INTO credenciales (id, usuario, password) VALUES (?, ?, ?)";
+		    try (PreparedStatement ps = connection.prepareStatement(sql)) {
+		        ps.setInt(1, idPersona);
+		        ps.setString(2, nombreUsuario);
+		        ps.setString(3, contrasena);
+		        return ps.executeUpdate() > 0;
+		    } catch (SQLException e) {
+				e.printStackTrace();
+			}
+		 return false;
+	}
+
 }

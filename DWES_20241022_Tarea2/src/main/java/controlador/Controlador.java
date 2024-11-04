@@ -1,15 +1,15 @@
-package servicios;
+package controlador;
 
-import servicios.*;
+import controlador.*;
 
 
-public class ServiciosFactory {
+public class Controlador {
 	
-	private static ServiciosFactory servicios;
+	private static Controlador servicios;
 	
-	public static ServiciosFactory getServicios() {
+	public static Controlador getServicios() {
 		if (servicios == null)
-			servicios = new ServiciosFactory();
+			servicios = new Controlador();
 		return servicios;
 	}
 	

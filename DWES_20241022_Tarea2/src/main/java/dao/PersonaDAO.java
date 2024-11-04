@@ -5,9 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import modelo.Credenciales;
-import modelo.Persona;
-
 
 
 public class PersonaDAO {
@@ -33,6 +30,21 @@ public class PersonaDAO {
 	    }
 	    
 	    return false; 
+	}
+
+	public int insertarPersona(String nombre, String email, String nombreUsuario, String contrasena) {
+		String sql = "INSERT INTO personas (nombre, email) VALUES (?, LOWER(?))";
+		try (PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+	        ps.setString(1, nombre);
+	        ps.setString(2, email);
+	        ps.executeUpdate();
+	        ResultSet rs = ps.getGeneratedKeys();
+	        if (rs.next())
+	        return	rs.getInt(1);
+	    } catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	
