@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import modelo.Ejemplar;
+import modelo.Mensaje;
 import modelo.Planta;
 
 
@@ -70,5 +72,30 @@ public class EjemplarDAO {
 			ex.printStackTrace();
 		}
         return e;
+	}
+
+	public ArrayList<Ejemplar> listarEjemplaresPlanta(Planta planta) {
+		String sql = "SELECT * FROM ejemplares WHERE idPlanta = ?";
+		ArrayList<Ejemplar> resul = new ArrayList<Ejemplar>();
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, planta.getCodigo());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Ejemplar ejemplar = new Ejemplar();
+				ejemplar.setId(rs.getLong(1));
+				ejemplar.setNombre(rs.getString(2));
+				
+				resul.add(ejemplar);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return resul;
 	}
 }
