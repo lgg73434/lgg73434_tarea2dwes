@@ -1,6 +1,6 @@
 package principal;
 
-import fachada.ViveroFachada;
+import vista.ViveroFachada;
 
 
 public class Principal {

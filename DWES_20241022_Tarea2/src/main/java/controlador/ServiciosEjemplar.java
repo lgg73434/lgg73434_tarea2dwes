@@ -1,5 +1,7 @@
 package controlador;
 
+import java.util.ArrayList;
+
 import conexionBD.ConexionBD;
 import dao.EjemplarDAO;
 import modelo.Ejemplar;
@@ -18,5 +20,12 @@ public class ServiciosEjemplar {
 	public Ejemplar crearEjemplar (Planta p) {
 		return ejemplarDao.crearEjemplar(p);
 	}
+
+	public ArrayList<Ejemplar> mostrarEjemplaresPlanta(Planta planta) {
+		return ejemplarDao.listarEjemplaresPlanta(planta);
+		
+	}
+
+
 
 }
