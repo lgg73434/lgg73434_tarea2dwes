@@ -1,6 +1,5 @@
 package vista;
 
-import java.sql.SQLSyntaxErrorException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -277,6 +276,7 @@ public class ViveroFachada {
 		} while (opcion != 6);
 	}
 
+	
 	public void mostrarMenuGestionarPlantas() {
 
 		int opcion = 0;
@@ -291,7 +291,7 @@ public class ViveroFachada {
 				scanner.nextLine();
 			} catch (InputMismatchException e) {
 				System.err.println("Opción no válida. Por favor, introduce un número entero.");
-				scanner.nextLine(); // Limpiar el buffer de entrada
+				scanner.nextLine(); 
 				continue; // Volver a pedir la opción
 			}
 
@@ -415,7 +415,6 @@ public class ViveroFachada {
 				break;
 
 			case 3:
-				// Vuelve al menú anterior que le hizo la llamada
 				return;
 
 			default:
@@ -500,7 +499,7 @@ public class ViveroFachada {
 				break;
 
 			case 2:
-				System.out.println("*** Ejemplares de una planta ***");
+				System.out.println("*** Ejemplares de planta/s ***");
 
 				List<Planta> plantas = svPlanta.mostrarPlantas();
 				if (!plantas.isEmpty()) {
@@ -516,7 +515,7 @@ public class ViveroFachada {
 
 					do {
 						System.out.println(
-								"Introduce el numero de la planta de la que quieres ver los ejemplares o introduce 0 para salir");
+								"Introduce el número de la planta de la que quieres ver los ejemplares o introduce 0 para salir");
 						try {
 							numeroPlanta = scanner.nextInt();
 							scanner.nextLine();
@@ -559,7 +558,7 @@ public class ViveroFachada {
 						}
 
 					} else {
-						System.out.println("No has elegido ninguna planta de la que ver sus ejemplares.");
+						System.out.println("No has seleccionado ninguna planta para ver sus ejemplares.");
 					}
 
 				} else {
@@ -569,6 +568,45 @@ public class ViveroFachada {
 
 			case 3:
 				// Ver mensajes de seguimiento de un ejemplar
+				System.out.println("*** Ver mensajes de seguimiento ***");
+				
+				ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplares();
+				if(!ejemplares.isEmpty()) {
+					
+					System.out.println("Ejemplares existentes en el vivero:");
+					for (int i = 0; i < ejemplares.size(); i++) {
+						System.out.println(i + 1 + ". " + ejemplares.get(i).getNombre());
+					}
+					
+					int numEjemplar = 0;
+					int finEjemplares = ejemplares.size();
+					do {
+						System.out.println(
+								"Introduce el número de ejemplar del que quieres ver su seguimiento o introduce 0 para salir");
+						try {
+							numEjemplar = scanner.nextInt();
+							scanner.nextLine();
+						} catch (InputMismatchException e) {
+							System.err.println("Debes introducir un número");
+							scanner.nextLine();
+						}
+
+						if (numEjemplar > finEjemplares || numEjemplar < 0) {
+							System.err.println("Debes introducir un número entre 0 y " + finEjemplares);
+							continue;
+						} else {
+							break;
+						}
+
+					} while (numEjemplar != 0);
+					
+					//// Capturar el ejemplar seleccioando y hacer la busqueda de sus mensajes ordenados cronologicamente
+					
+					
+				}else {
+					System.out.println("Aún no hay ejemplares registrados en el vivero:");
+				}
+				
 				break;
 
 			case 4:

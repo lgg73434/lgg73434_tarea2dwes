@@ -7,11 +7,10 @@ import java.sql.SQLException;
 
 import modelo.Ejemplar;
 import modelo.Mensaje;
-import modelo.Planta;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class MensajeDAO {
 	

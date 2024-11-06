@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import modelo.Ejemplar;
-import modelo.Mensaje;
 import modelo.Planta;
 
 
@@ -96,6 +95,28 @@ public class EjemplarDAO {
 			e.printStackTrace();
 		}
 		
+		return resul;
+	}
+
+	public ArrayList<Ejemplar> listarEjemplares() {
+		String sql = "SELECT * FROM ejemplares ORDER BY nombre";
+		ArrayList<Ejemplar> resul = new ArrayList<Ejemplar>();
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Ejemplar ejemplar = new Ejemplar();
+				ejemplar.setId(rs.getLong(1));
+				ejemplar.setNombre(rs.getString(2));
+				
+				resul.add(ejemplar);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return resul;
 	}
 }

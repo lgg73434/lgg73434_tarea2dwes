@@ -26,6 +26,10 @@ public class ServiciosEjemplar {
 		
 	}
 
+	public ArrayList<Ejemplar> mostrarEjemplares() {
+		return ejemplarDao.listarEjemplares();
+	}
+
 
 
 }
