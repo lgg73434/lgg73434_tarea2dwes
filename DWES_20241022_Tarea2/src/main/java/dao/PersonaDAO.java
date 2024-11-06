@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import modelo.Persona;
+
 
 
 public class PersonaDAO {
@@ -47,6 +49,27 @@ public class PersonaDAO {
 		return -1;
 	}
 	
+	public Persona obtenerPersonaPorId(Long id) {
+		String sqlString = "SELECT id, nombre, email FROM personas WHERE id = ?";
+		Persona persona = null;
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sqlString)) {
+			pstmt.setLong(1, id);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					persona = new Persona();
+					persona.setId(rs.getLong("id"));
+					persona.setNombre(rs.getString("nombre"));
+					persona.setEmail(rs.getString("email"));
+					
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return persona;
+	}
 	
 
 

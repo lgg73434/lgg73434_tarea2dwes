@@ -276,7 +276,6 @@ public class ViveroFachada {
 		} while (opcion != 6);
 	}
 
-	
 	public void mostrarMenuGestionarPlantas() {
 
 		int opcion = 0;
@@ -291,7 +290,7 @@ public class ViveroFachada {
 				scanner.nextLine();
 			} catch (InputMismatchException e) {
 				System.err.println("Opción no válida. Por favor, introduce un número entero.");
-				scanner.nextLine(); 
+				scanner.nextLine();
 				continue; // Volver a pedir la opción
 			}
 
@@ -473,8 +472,7 @@ public class ViveroFachada {
 									String mensaje = "Ejemplar registrado por: " + s.getUsuario() + " a las "
 											+ LocalDateTime.now();
 									Mensaje m = new Mensaje(LocalDateTime.now(), mensaje,
-											svCredenciales.getIdCredenciales(s.getUsuario()),
-											e.getId());
+											svCredenciales.getIdCredenciales(s.getUsuario()), e.getId());
 
 									if (svMensaje.crearMensaje(m) > 0) {
 										System.out.println("Ejemplar y mensaje inicial registrados con exito");
@@ -569,20 +567,19 @@ public class ViveroFachada {
 			case 3:
 				// Ver mensajes de seguimiento de un ejemplar
 				System.out.println("*** Ver mensajes de seguimiento ***");
-				
+
 				ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplares();
-				if(!ejemplares.isEmpty()) {
-					
+				if (!ejemplares.isEmpty()) {
+
 					System.out.println("Ejemplares existentes en el vivero:");
 					for (int i = 0; i < ejemplares.size(); i++) {
 						System.out.println(i + 1 + ". " + ejemplares.get(i).getNombre());
 					}
-					
+
 					int numEjemplar = 0;
 					int finEjemplares = ejemplares.size();
 					do {
-						System.out.println(
-								"Introduce el número de ejemplar del que quieres ver su seguimiento o introduce 0 para salir");
+						System.out.println("Introduce el número de ejemplar del que quieres ver su seguimiento.");
 						try {
 							numEjemplar = scanner.nextInt();
 							scanner.nextLine();
@@ -592,21 +589,30 @@ public class ViveroFachada {
 						}
 
 						if (numEjemplar > finEjemplares || numEjemplar < 0) {
-							System.err.println("Debes introducir un número entre 0 y " + finEjemplares);
+							System.err.println("Debes introducir un número entre 1 y " + finEjemplares);
 							continue;
 						} else {
 							break;
 						}
 
-					} while (numEjemplar != 0);
-					
-					//// Capturar el ejemplar seleccioando y hacer la busqueda de sus mensajes ordenados cronologicamente
-					
-					
-				}else {
+					} while (true);
+
+					if (svMensaje.getMensajesPorEjemplar(ejemplares.get(numEjemplar - 1)).isEmpty()) {
+						System.out.println("El ejemplar no tiene mensajes");
+					} else {
+						System.out.println(
+								"Lista de mensajes del ejemplar: " + ejemplares.get(numEjemplar - 1).getNombre());
+						for (Mensaje m : svMensaje.getMensajesPorEjemplar(ejemplares.get(numEjemplar - 1))) {
+							System.out.println(
+									m.getFechaHora() + "\t" + svPersona.getPersonaporID(m.getIdPersona()).getNombre()
+											+ "\n\t" + m.getMensaje() + "\n");
+						}
+					}
+
+				} else {
 					System.out.println("Aún no hay ejemplares registrados en el vivero:");
 				}
-				
+
 				break;
 
 			case 4:
@@ -640,6 +646,61 @@ public class ViveroFachada {
 			switch (opcion) {
 			case 1:
 				// Pedir datos para registrar un mensaje
+				ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplares();
+				if (!ejemplares.isEmpty()) {
+
+					System.out.println("Ejemplares existentes en el vivero:");
+					for (int i = 0; i < ejemplares.size(); i++) {
+						System.out.println(i + 1 + ". " + ejemplares.get(i).getNombre());
+					}
+
+					int numEjemplar = 0;
+					int finEjemplares = ejemplares.size();
+					do {
+						System.out.println("Introduce el número de ejemplar del que quieres crear un mensaje.");
+						try {
+							numEjemplar = scanner.nextInt();
+							scanner.nextLine();
+						} catch (InputMismatchException e) {
+							System.err.println("Debes introducir un número");
+							scanner.nextLine();
+						}
+
+						if (numEjemplar > finEjemplares || numEjemplar < 0) {
+							System.err.println("Debes introducir un número entre 1 y " + finEjemplares);
+							continue;
+						} else {
+							break;
+						}
+
+					} while (true);
+
+					Mensaje men = null;
+
+					String mensaje = "";
+					
+					do {
+						System.out.println("Introduce un mensaje: ");
+						mensaje = scanner.nextLine();
+						if (!Validar.validarMensaje(mensaje)) {
+							System.err.println("Formato de mensaje incorrecto");
+							continue;
+						} else {
+							men = new Mensaje(LocalDateTime.now(), mensaje,
+									svCredenciales.getIdCredenciales(s.getUsuario()),
+									ejemplares.get(numEjemplar - 1).getId());
+							if (svMensaje.crearMensaje(men) > 0) {
+								System.out.println("Mensaje añadido correctamente");
+							} else {
+								System.err.println("No se ha podido añadir el mensaje");
+							}
+						}
+
+					} while (!Validar.validarMensaje(mensaje));
+
+				} else {
+					System.out.println("Aún no hay ejemplares registrados en el vivero:");
+				}
 				break;
 			case 2:
 				// buscar mensajes por usuario

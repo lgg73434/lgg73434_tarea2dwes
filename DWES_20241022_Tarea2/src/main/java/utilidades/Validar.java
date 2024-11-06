@@ -23,5 +23,9 @@ public class Validar {
 	public static boolean validarCodigo(String codigo) {
 		return codigo.matches("^[A-Za-z]{1,50}$");
 	}
+	
+	public static boolean validarMensaje(String mensaje) { 
+	    return mensaje !=null && !mensaje.trim().isEmpty() && mensaje.length() <=500;
+	}
 
 }

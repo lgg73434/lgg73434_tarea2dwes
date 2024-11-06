@@ -4,6 +4,7 @@ package controlador;
 import conexionBD.ConexionBD;
 import dao.CredencialesDAO;
 import dao.PersonaDAO;
+import modelo.Persona;
 
 
 public class ServiciosPersona {
@@ -38,6 +39,10 @@ public class ServiciosPersona {
 			} 
 	        return false; 
 	       
+	}
+	
+	public Persona getPersonaporID (Long id) {
+		return personaDao.obtenerPersonaPorId(id);
 	}
 	
 
