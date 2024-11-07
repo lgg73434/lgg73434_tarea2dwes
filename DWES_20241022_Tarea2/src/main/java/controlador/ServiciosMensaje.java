@@ -6,6 +6,7 @@ import conexionBD.ConexionBD;
 import dao.MensajeDAO;
 import modelo.Ejemplar;
 import modelo.Mensaje;
+import modelo.Planta;
 
 public class ServiciosMensaje {
 	
@@ -23,6 +24,14 @@ public class ServiciosMensaje {
 
 	public ArrayList<Mensaje> getMensajesPorEjemplar(Ejemplar ejemplar) {
 		return mensajeDao.getMensajesPorEjemplar(ejemplar);
+	}
+
+	public ArrayList<Mensaje> getMensajesPorUsuario(Long idUsuario) {
+		return mensajeDao.getMensajesPorUsuario(idUsuario);
+	}
+
+	public ArrayList<Mensaje> getMensajesPorPlanta(Planta planta) {
+		return mensajeDao.getMensajesPorPlanta(planta);
 	}
 
 }

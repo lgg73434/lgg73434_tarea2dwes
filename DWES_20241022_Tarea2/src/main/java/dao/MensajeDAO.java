@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import modelo.Ejemplar;
 import modelo.Mensaje;
+import modelo.Planta;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -69,6 +70,69 @@ public class MensajeDAO {
 		return resul;
 		
 	}
+
+	public ArrayList<Mensaje> getMensajesPorUsuario(Long idUsuario) {
+		String sql = "SELECT * FROM mensajes WHERE idPersona = ? ORDER BY fechaHora ASC";
+		ArrayList<Mensaje> resul = new ArrayList<Mensaje>();
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setLong(1, idUsuario);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Mensaje mensaje = new Mensaje();
+				mensaje.setId(rs.getLong(1));
+				mensaje.setFechaHora(rs.getTimestamp(2).toLocalDateTime());
+				mensaje.setMensaje(rs.getString(3));
+				mensaje.setIdPersona(rs.getLong(4));
+				mensaje.setIdEjemplar(rs.getLong(5));
+
+				resul.add(mensaje);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return resul;
+	}
+
+	public ArrayList<Mensaje> getMensajesPorPlanta(Planta planta) {
+		
+		String sql = "SELECT * FROM mensajes "
+				+ "JOIN ejemplares ON mensajes.idEjemplar = ejemplares.id "
+				+ "JOIN plantas ON ejemplares.idPlanta = plantas.codigo "
+				+ "WHERE plantas.codigo = ? "
+				+ "ORDER BY ejemplares.nombre, mensajes.fechaHora";
+		ArrayList<Mensaje> resul = new ArrayList<Mensaje>();
+		
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, planta.getCodigo());
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Mensaje mensaje = new Mensaje();
+				mensaje.setId(rs.getLong(1));
+				mensaje.setFechaHora(rs.getTimestamp(2).toLocalDateTime());
+				mensaje.setMensaje(rs.getString(3));
+				mensaje.setIdPersona(rs.getLong(4));
+				mensaje.setIdEjemplar(rs.getLong(5));
+
+				resul.add(mensaje);
+			}
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return resul;
+	}
+	
+	
 	
 
 }

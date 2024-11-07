@@ -119,4 +119,24 @@ public class EjemplarDAO {
 		}
 		return resul;
 	}
+
+	public String getNombreEjemplar(Long idEjemplar) {
+		String sql = "SELECT nombre FROM ejemplares WHERE id = ?";
+		String nombreEjemplar = "";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setLong(1, idEjemplar);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+	            nombreEjemplar = rs.getString(1); // O también: rs.getString("nombre");
+	        }
+			
+		
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nombreEjemplar;
+	}
 }

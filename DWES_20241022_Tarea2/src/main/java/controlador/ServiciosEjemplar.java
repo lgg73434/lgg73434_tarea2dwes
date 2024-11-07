@@ -30,6 +30,10 @@ public class ServiciosEjemplar {
 		return ejemplarDao.listarEjemplares();
 	}
 
+	public String getEjemplarPorId(Long idEjemplar) {
+		return ejemplarDao.getNombreEjemplar(idEjemplar);
+	}
+
 
 
 }

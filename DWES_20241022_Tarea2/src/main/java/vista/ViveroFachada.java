@@ -637,6 +637,7 @@ public class ViveroFachada {
 
 			try {
 				opcion = scanner.nextInt();
+				scanner.nextLine();
 			} catch (InputMismatchException e) {
 				System.out.println("Opción no válida. Por favor, introduce un número entero.");
 				scanner.next(); // Limpiar el buffer de entrada
@@ -678,7 +679,7 @@ public class ViveroFachada {
 					Mensaje men = null;
 
 					String mensaje = "";
-					
+
 					do {
 						System.out.println("Introduce un mensaje: ");
 						mensaje = scanner.nextLine();
@@ -704,12 +705,81 @@ public class ViveroFachada {
 				break;
 			case 2:
 				// buscar mensajes por usuario
+				String nombreUsuario = "";
+				do {
+					System.out.println("Introduce el nombre de usuario: ");
+					nombreUsuario = scanner.nextLine();
+					if (!Validar.validarNombreUsuario(nombreUsuario)) {
+						System.out.println("Nombre de usuario no válido");
+					} else {
+						if (!svCredenciales.existeUsuario(nombreUsuario)) {
+							System.out.println("Nombre de usuario no registrado");
+						} else {
+							Long idUsuario = svCredenciales.getIdCredenciales(nombreUsuario);
+							ArrayList<Mensaje> mensajesUsuario = svMensaje.getMensajesPorUsuario(idUsuario);
+							if (!mensajesUsuario.isEmpty()){
+								System.out.println("\n* Mensajes registrados por: "+nombreUsuario+" *");
+								for(Mensaje mensaje : mensajesUsuario) {
+									System.out.println("\n"+mensaje.getFechaHora() + "\n\t"+ mensaje.getMensaje());
+								}
+							}else {
+								System.out.println("No existen mensajes registrados por el usuario "+nombreUsuario);
+							}
+						}
+					}
+
+				} while (!Validar.validarNombreUsuario(nombreUsuario) || !svCredenciales.existeUsuario(nombreUsuario));
 				break;
+				
 			case 3:
 				// buscar mensajes por fecha
+				
+				
 				break;
 			case 4:
 				// buscar mensajes por tipo planta
+				System.out.println("*** Mensajes por tipo de planta ***");
+				List<Planta> plantas = svPlanta.mostrarPlantas();
+				if (!plantas.isEmpty()) {
+
+					System.out.println("Plantas existentes en el vivero:");
+					for (int i = 0; i < plantas.size(); i++) {
+						System.out.println(i + 1 + ". " + plantas.get(i).getNombreComun());
+					}
+					
+					int numPlanta = 0;
+					int finPlantas = plantas.size();
+					do {
+						System.out.println("Introduce el número de planta de la que quieres ver los mensajes.");
+						try {
+							numPlanta = scanner.nextInt();
+							scanner.nextLine();
+						} catch (InputMismatchException e) {
+							System.err.println("Debes introducir un número");
+							scanner.nextLine();
+						}
+
+						if (numPlanta > finPlantas || numPlanta < 0) {
+							System.err.println("Debes introducir un número entre 1 y " + finPlantas);
+							continue;
+						} else {
+							break;
+						}
+
+					} while (true);
+					
+					ArrayList<Mensaje> mensajesPlanta = svMensaje.getMensajesPorPlanta(plantas.get(numPlanta-1));
+					if(!mensajesPlanta.isEmpty()) {
+						for(Mensaje mensajePlanta : mensajesPlanta) {
+							System.out.println("\n"+mensajePlanta.getFechaHora() + " "+svEjemplar.getEjemplarPorId(mensajePlanta.getIdEjemplar()) +"\n\t"+ mensajePlanta.getMensaje());
+						}
+					} else {
+						System.out.println("No hay mensajes registrados para este tipo de planta");
+					}
+					
+				} else {
+					System.out.println("No hay plantas registradas en el vivero");
+				}
 				break;
 
 			case 5:
