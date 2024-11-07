@@ -23,7 +23,7 @@ public class Validar {
 	}
 
 	public static boolean validarContrasena(String contrasena) {	
-		return contrasena != null && contrasena.length() >= 6 && contrasena.length() <= 10 && !contrasena.contains(" ");
+		return contrasena.matches("^[a-zA-Z0-9]{6,10}$");
 	}
 
 	public static boolean validarCodigo(String codigo) {
@@ -53,7 +53,7 @@ public class Validar {
             LocalDate fechaLocal = LocalDate.parse(fecha, formato);
             
             // Obtener la hora actual y restarle 1 hora
-            LocalTime horaActual = LocalTime.now().minusMinutes(3);
+            LocalTime horaActual = LocalTime.now();
             
             // Convertir la fecha a LocalDateTime con la hora establecida a medianoche (00:00:00)
             return LocalDateTime.of(fechaLocal, horaActual);

@@ -1,16 +1,15 @@
 package vista;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import controlador.*;
-import modelo.Ejemplar;
-import modelo.Mensaje;
+
 import modelo.Planta;
-import utilidades.Validar;;
+import utilidades.Validar;
+
 
 public class ViveroFachada {
 
@@ -18,7 +17,9 @@ public class ViveroFachada {
 
 	Scanner scanner = new Scanner(System.in);
 
-	SesionActiva sesion = SesionActiva.getSesionActiva();
+	SesionActiva sesion = new SesionActiva ("");
+	
+
 
 	Controlador serviciosControlador = Controlador.getServicios();
 
@@ -27,6 +28,12 @@ public class ViveroFachada {
 	ServiciosPersona svPersona = serviciosControlador.getServiciosPersona();
 	ServiciosCredenciales svCredenciales = serviciosControlador.getServiciosCredenciales();
 	ServiciosMensaje svMensaje = serviciosControlador.getServiciosMensaje();
+	
+	MenuEjemplares menuEjemplares = new MenuEjemplares (sesion);
+	MenuPlantas menuPlantas = new MenuPlantas ();
+	MenuMensajes menuMensajes = new MenuMensajes (sesion);
+	
+
 
 	public static ViveroFachada getPortal() {
 		if (portalVivero == null)
@@ -60,11 +67,13 @@ public class ViveroFachada {
 
 			switch (opcion) {
 			case 1:
-				if (svPlanta.mostrarPlantas().size() == 0) {
+				List<Planta> plantas = svPlanta.mostrarPlantas();
+				if (plantas.isEmpty()) {
 					System.out.println("No hay plantas registradas.");
 				} else {
-					for (int i = 0; i < svPlanta.mostrarPlantas().size(); i++) {
-						System.out.println(i + 1 + ". " + svPlanta.mostrarPlantas().get(i));
+					System.out.println("Plantas registradas");
+					for (int i = 0; i < plantas.size(); i++) {
+						System.out.println((i + 1) + ". "+ plantas.get(i).getNombreComun() +"\tNombre científico: "+ plantas.get(i).getNombreCientifico());
 					}
 				}
 				break;
@@ -82,9 +91,9 @@ public class ViveroFachada {
 						sesion.setUsuario(usuario);
 						System.out.println("\n¡Hola "+sesion.getUsuario()+"!");
 						if (usuario.equalsIgnoreCase("admin")) {
-							mostrarMenuAdministrador(sesion);
+							mostrarMenuAdministrador();
 						} else {
-							mostrarMenuPersonal(sesion);
+							mostrarMenuPersonal();
 						}
 
 					} else {
@@ -105,52 +114,8 @@ public class ViveroFachada {
 		} while (opcion != 3);
 	}
 
-	public void mostrarMenuPersonal(SesionActiva s) {
 
-		
-		int opcion = 0;
-		do {
-			System.out.println("\nSeleccione una opción:");
-			System.out.println("1.  Gestionar ejemplares");
-			System.out.println("2.  Gestionar mensajes");
-			System.out.println("3.  Cerrar sesión");
-			System.out.println("4.  Cerrar sesión y salir");
-
-			try {
-				opcion = scanner.nextInt();
-				scanner.nextLine();
-			} catch (InputMismatchException e) {
-				System.err.println("Opción no válida. Por favor, introduce un número entero.");
-				scanner.nextLine(); // Limpiar el buffer de entrada
-				continue; // Volver a pedir la opción
-			}
-
-			switch (opcion) {
-			case 1:
-				mostrarMenuGestionarEjemplares(s);
-				break;
-
-			case 2:
-				mostrarMenuGestionarMensajes(s);
-				break;
-
-			case 3:
-				sesion.setUsuario(null);
-				return;
-
-			case 4:
-				System.out.println("¡Adios!");
-				System.exit(0);
-
-			default:
-				System.err.println("Opción incorrecta.");
-			}
-
-		} while (opcion != 4);
-
-	}
-
-	public void mostrarMenuAdministrador(SesionActiva s) {
+	public void mostrarMenuAdministrador() {
 
 		int opcion = 0;
 
@@ -174,15 +139,16 @@ public class ViveroFachada {
 
 			switch (opcion) {
 			case 1:
-				mostrarMenuGestionarPlantas();
+				menuPlantas.mostrarMenuGestionarPlantas();
 				break;
 
 			case 2:
-				mostrarMenuGestionarEjemplares(s);
+			
+				menuEjemplares.mostrarMenuGestionarEjemplares();
 				break;
 
 			case 3:
-				mostrarMenuGestionarMensajes(s);
+				menuMensajes.mostrarMenuGestionarMensajes();
 				break;
 
 			case 4:
@@ -263,7 +229,7 @@ public class ViveroFachada {
 				break;
 
 			case 5:
-				sesion.setUsuario(null);
+				sesion.setUsuario("");
 				return;
 
 			case 6:
@@ -276,577 +242,53 @@ public class ViveroFachada {
 
 		} while (opcion != 6);
 	}
-
-	public void mostrarMenuGestionarPlantas() {
+	
+	
+	public void mostrarMenuPersonal() {
 
 		int opcion = 0;
 		do {
 			System.out.println("\nSeleccione una opción:");
-			System.out.println("1.  Registrar planta");
-			System.out.println("2.  Modificar planta");
-			System.out.println("3.  Volver atrás");
+			System.out.println("1.  Gestionar ejemplares");
+			System.out.println("2.  Gestionar mensajes");
+			System.out.println("3.  Cerrar sesión");
+			System.out.println("4.  Cerrar sesión y salir");
 
 			try {
 				opcion = scanner.nextInt();
 				scanner.nextLine();
 			} catch (InputMismatchException e) {
 				System.err.println("Opción no válida. Por favor, introduce un número entero.");
-				scanner.nextLine();
-				continue; // Volver a pedir la opción
-			}
-
-			switch (opcion) {
-			case 1:
-				System.out.println("*** Registrar nueva planta ***\n");
-
-				String codigo = "";
-				String nombreComun = "";
-				String nombreCientifico = "";
-
-				do {
-					System.out.println("Introduce el código de la planta: ");
-					codigo = scanner.nextLine();
-
-					if (!Validar.validarCodigo(codigo)) {
-						System.err.println("Introducidos caracteres no válidos en el código.");
-					}
-
-					if (svPlanta.existeCodigo(codigo)) {
-						System.err.println("Código ya registrado en el sistema.");
-					}
-
-					if (Validar.validarCodigo(codigo) && !svPlanta.existeCodigo(codigo)) {
-						break;
-					}
-
-				} while (true);
-
-				do {
-					System.out.println("Introduce el nombre común de la planta: ");
-					nombreComun = scanner.nextLine();
-
-					if (!Validar.validarNombre(nombreComun)) {
-						System.err.println("Introducidos caracteres no válidos en el nombre común.");
-					}
-
-				} while (!Validar.validarNombre(nombreComun));
-
-				do {
-					System.out.println("Introduce el nombre científico de la planta: ");
-					nombreCientifico = scanner.nextLine();
-
-					if (!Validar.validarNombre(nombreCientifico)) {
-						System.err.println("Introducidos caracteres no válidos en el nombre común.");
-					}
-
-				} while (!Validar.validarNombre(nombreCientifico));
-
-				Planta plantaNueva = new Planta(codigo.toUpperCase(), nombreComun, nombreCientifico);
-
-				if (svPlanta.registrarPlanta(plantaNueva) > 0) {
-					System.out.println("Nueva planta registrada con éxito");
-				} else {
-					System.err.println("Error al registrar la nueva planta.");
-				}
-
-				break;
-
-			case 2:
-
-				System.out.println("*** Modificar datos de una planta ***\n");
-
-				if (!svPlanta.mostrarPlantas().isEmpty()) {
-					System.out.println("Plantas registradas en el vivero:");
-
-					for (int i = 0; i < svPlanta.mostrarPlantas().size() && !svPlanta.mostrarPlantas().isEmpty(); i++) {
-						System.out.println(i + 1 + ". " + svPlanta.mostrarPlantas().get(i).getNombreComun());
-					}
-
-					int numFinalLista = svPlanta.mostrarPlantas().size();
-					int numPlanta = 0;
-					do {
-						try {
-							System.out.println("Introduce el número de la planta que quieres modificar: ");
-							numPlanta = scanner.nextInt();
-							scanner.nextLine();
-
-							if (numPlanta < 1 || numPlanta > numFinalLista) {
-								System.err.println("Debes introducir un número entre 1 y " + numFinalLista);
-
-							} else {
-								Planta planta = svPlanta.mostrarPlantas().get(numPlanta - 1);
-
-								do {
-									System.out.println("Introduce el nombre común de la planta: ");
-									nombreComun = scanner.nextLine();
-
-									if (!Validar.validarNombre(nombreComun)) {
-										System.err.println("Introducidos caracteres no válidos en el nombre común.");
-									}
-								} while (!Validar.validarNombre(nombreComun));
-
-								do {
-									System.out.println("Introduce el nombre científico de la planta:");
-									nombreCientifico = scanner.nextLine();
-
-									if (!Validar.validarNombre(nombreCientifico)) {
-										System.err.println("Introducidos caracteres no válidos en el nombre común.");
-									}
-								} while (!Validar.validarNombre(nombreCientifico));
-
-								planta.setNombrecientifico(nombreCientifico);
-								planta.setNombreComun(nombreComun);
-
-								if (svPlanta.actualizarPlanta(planta) > 0) {
-									System.out.println("Planta actualizada correctamente.");
-								} else {
-									System.err.println("Error al actualizar la planta.");
-								}
-							}
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-					} while (numPlanta < 1 || numPlanta > numFinalLista);
-
-				} else {
-					System.out.println("Aún no hay plantas registradas en el vivero.");
-				}
-				break;
-
-			case 3:
-				return;
-
-			default:
-				System.err.println("Opción incorrecta.");
-			}
-		} while (opcion != 3);
-
-	}
-
-	public void mostrarMenuGestionarEjemplares(SesionActiva s) {
-
-		int opcion = 0;
-		do {
-			System.out.println("\nSeleccione una opción:");
-			System.out.println("1.  Registrar un nuevo ejemplar");
-			System.out.println("2.  Ver ejemplares de una planta");
-			System.out.println("3.  Ver mensajes de seguimiento de un ejemplar");
-			System.out.println("4.  Volver atrás");
-
-			try {
-				opcion = scanner.nextInt();
-				scanner.nextLine();
-
-			} catch (InputMismatchException e) {
-				System.out.println("Opción no válida. Por favor, introduce un número entero.");
 				scanner.nextLine(); // Limpiar el buffer de entrada
 				continue; // Volver a pedir la opción
 			}
 
 			switch (opcion) {
 			case 1:
-				System.out.println("*** Registrar un nuevo ejemplar ***");
-
-				if (!svPlanta.mostrarPlantas().isEmpty()) {
-
-					System.out.println("Plantas registradas en el vivero:");
-
-					for (int i = 0; i < svPlanta.mostrarPlantas().size(); i++) {
-						System.out.println(i + 1 + ". " + svPlanta.mostrarPlantas().get(i).getNombreComun());
-					}
-
-					int numFinalLista = svPlanta.mostrarPlantas().size();
-					int numPlanta = 0;
-					do {
-						try {
-							System.out.println(
-									"Introduce el numero de la planta de la que quieres registrar un ejemplar");
-							numPlanta = scanner.nextInt();
-							scanner.nextLine();
-
-							if (numPlanta < 1 || numPlanta > numFinalLista) {
-								System.err.println("Debes introducir un número entre 1 y " + numFinalLista);
-							} else {
-								Ejemplar e = svEjemplar.crearEjemplar(svPlanta.mostrarPlantas().get(numPlanta - 1));
-								if (e != null) {
-									String mensaje = "Ejemplar registrado por: " + s.getUsuario() + " a las "
-											+ LocalDateTime.now();
-									Mensaje m = new Mensaje(LocalDateTime.now(), mensaje,
-											svCredenciales.getIdCredenciales(s.getUsuario()), e.getId());
-
-									if (svMensaje.crearMensaje(m) > 0) {
-										System.out.println("Ejemplar y mensaje inicial registrados con exito");
-									} else {
-										System.out.println(
-												"Ejemplar registrado, pero no se ha podido añadir el mensaje inicial");
-									}
-
-								} else {
-									System.err.println("Error al registrar el ejemplar");
-								}
-							}
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-					} while (numPlanta < 1 || numPlanta > numFinalLista);
-				} else {
-					System.out.println("Aún no hay plantas registradas en el vivero:");
-				}
-
+				menuEjemplares.mostrarMenuGestionarEjemplares();
 				break;
 
 			case 2:
-				System.out.println("*** Ejemplares de planta/s ***");
-
-				List<Planta> plantas = svPlanta.mostrarPlantas();
-				if (!plantas.isEmpty()) {
-
-					System.out.println("Plantas existentes en el vivero:");
-					for (int i = 0; i < plantas.size(); i++) {
-						System.out.println(i + 1 + ". " + plantas.get(i).getNombreComun());
-					}
-
-					int numeroFinalLista = plantas.size();
-					int numeroPlanta = 0;
-					List<Planta> plantasElegidas = new ArrayList<Planta>();
-
-					do {
-						System.out.println(
-								"Introduce el número de la planta de la que quieres ver los ejemplares o introduce 0 para salir");
-						try {
-							numeroPlanta = scanner.nextInt();
-							scanner.nextLine();
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-
-						if (numeroPlanta > numeroFinalLista || numeroPlanta < 0) {
-							System.err.println("Debes introducir un número entre 0 y " + numeroFinalLista);
-							continue;
-						}
-
-						if (numeroPlanta != 0) {
-							plantasElegidas.add(plantas.get(numeroPlanta - 1));
-						}
-
-					} while (numeroPlanta != 0);
-
-					if (!plantasElegidas.isEmpty()) {
-						for (int a = 0; a < plantasElegidas.size(); a++) {
-							System.out.println("\n- Ejemplares de " + plantasElegidas.get(a).getNombreComun() + ":");
-							ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplaresPlanta(plantasElegidas.get(a));
-
-							if (!ejemplares.isEmpty()) {
-								System.out.printf("%-20s %-20s %-20s%n", "NOMBRE", "Nº MENSAJES", "ULTIMO MENSAJE");
-								System.out.println("---------------------------------------------------------------");
-								for (int b = 0; b < ejemplares.size(); b++) {
-									System.out.println();
-									ArrayList<Mensaje> mensajes = svMensaje.getMensajesPorEjemplar(ejemplares.get(b));
-									System.out.printf("%-20s %-20d %-20s%n", ejemplares.get(b).getNombre(),
-											mensajes.size(), mensajes.get(0).getFechaHora());
-
-								}
-							} else {
-								System.out.println("No existen ejemplares registrados de "
-										+ plantasElegidas.get(a).getNombreComun() + ".");
-							}
-
-						}
-
-					} else {
-						System.out.println("No has seleccionado ninguna planta para ver sus ejemplares.");
-					}
-
-				} else {
-					System.out.println("Aún no hay plantas registradas en el vivero:");
-				}
+				menuMensajes.mostrarMenuGestionarMensajes();
 				break;
 
 			case 3:
-				// Ver mensajes de seguimiento de un ejemplar
-				System.out.println("*** Ver mensajes de seguimiento ***");
-
-				ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplares();
-				if (!ejemplares.isEmpty()) {
-
-					System.out.println("Ejemplares existentes en el vivero:");
-					for (int i = 0; i < ejemplares.size(); i++) {
-						System.out.println(i + 1 + ". " + ejemplares.get(i).getNombre());
-					}
-
-					int numEjemplar = 0;
-					int finEjemplares = ejemplares.size();
-					do {
-						System.out.println("Introduce el número de ejemplar del que quieres ver su seguimiento.");
-						try {
-							numEjemplar = scanner.nextInt();
-							scanner.nextLine();
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-
-						if (numEjemplar > finEjemplares || numEjemplar < 0) {
-							System.err.println("Debes introducir un número entre 1 y " + finEjemplares);
-							continue;
-						} else {
-							break;
-						}
-
-					} while (true);
-
-					if (svMensaje.getMensajesPorEjemplar(ejemplares.get(numEjemplar - 1)).isEmpty()) {
-						System.out.println("El ejemplar no tiene mensajes");
-					} else {
-						System.out.println(
-								"Lista de mensajes del ejemplar: " + ejemplares.get(numEjemplar - 1).getNombre());
-						for (Mensaje m : svMensaje.getMensajesPorEjemplar(ejemplares.get(numEjemplar - 1))) {
-							System.out.println(
-									m.getFechaHora() + "\t" + svPersona.getPersonaporID(m.getIdPersona()).getNombre()
-											+ "\n\t" + m.getMensaje() + "\n");
-						}
-					}
-
-				} else {
-					System.out.println("Aún no hay ejemplares registrados en el vivero:");
-				}
-
-				break;
+				sesion.setUsuario("");
+				return;
 
 			case 4:
-				return;
+				System.out.println("¡Adios!");
+				System.exit(0);
 
 			default:
 				System.err.println("Opción incorrecta.");
 			}
+
 		} while (opcion != 4);
-	}
-
-	public void mostrarMenuGestionarMensajes(SesionActiva s) {
-
-		int opcion = 0;
-		do {
-			System.out.println("\nSeleccione una opción:");
-			System.out.println("1.  Nuevo mensaje");
-			System.out.println("2.  Buscar mensajes por usuario");
-			System.out.println("3.  Buscar mensajes por fecha");
-			System.out.println("4.  Buscar mensajes por tipo de planta");
-			System.out.println("5.  Volver atrás");
-
-			try {
-				opcion = scanner.nextInt();
-				scanner.nextLine();
-			} catch (InputMismatchException e) {
-				System.out.println("Opción no válida. Por favor, introduce un número entero.");
-				scanner.next(); // Limpiar el buffer de entrada
-				continue; // Volver a pedir la opción
-			}
-
-			switch (opcion) {
-			case 1:
-				// Pedir datos para registrar un mensaje
-				ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplares();
-				if (!ejemplares.isEmpty()) {
-
-					System.out.println("Ejemplares existentes en el vivero:");
-					for (int i = 0; i < ejemplares.size(); i++) {
-						System.out.println(i + 1 + ". " + ejemplares.get(i).getNombre());
-					}
-
-					int numEjemplar = 0;
-					int finEjemplares = ejemplares.size();
-					do {
-						System.out.println("Introduce el número de ejemplar del que quieres crear un mensaje.");
-						try {
-							numEjemplar = scanner.nextInt();
-							scanner.nextLine();
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-
-						if (numEjemplar > finEjemplares || numEjemplar < 0) {
-							System.err.println("Debes introducir un número entre 1 y " + finEjemplares);
-							continue;
-						} else {
-							break;
-						}
-
-					} while (true);
-
-					Mensaje men = null;
-
-					String mensaje = "";
-
-					do {
-						System.out.println("Introduce un mensaje: ");
-						mensaje = scanner.nextLine();
-						if (!Validar.validarMensaje(mensaje)) {
-							System.err.println("Formato de mensaje incorrecto");
-							continue;
-						} else {
-							men = new Mensaje(LocalDateTime.now(), mensaje,
-									svCredenciales.getIdCredenciales(s.getUsuario()),
-									ejemplares.get(numEjemplar - 1).getId());
-							if (svMensaje.crearMensaje(men) > 0) {
-								System.out.println("Mensaje añadido correctamente");
-							} else {
-								System.err.println("No se ha podido añadir el mensaje");
-							}
-						}
-
-					} while (!Validar.validarMensaje(mensaje));
-
-				} else {
-					System.out.println("Aún no hay ejemplares registrados en el vivero:");
-				}
-				break;
-			case 2:
-				// buscar mensajes por usuario
-				String nombreUsuario = "";
-				do {
-					System.out.println("Introduce el nombre de usuario: ");
-					nombreUsuario = scanner.nextLine();
-					if (!Validar.validarNombreUsuario(nombreUsuario)) {
-						System.out.println("Nombre de usuario no válido");
-					} else {
-						if (!svCredenciales.existeUsuario(nombreUsuario)) {
-							System.out.println("Nombre de usuario no registrado");
-						} else {
-							Long idUsuario = svCredenciales.getIdCredenciales(nombreUsuario);
-							ArrayList<Mensaje> mensajesUsuario = svMensaje.getMensajesPorUsuario(idUsuario);
-							if (!mensajesUsuario.isEmpty()){
-								System.out.println("\n* Mensajes registrados por: "+nombreUsuario+" *");
-								for(Mensaje mensaje : mensajesUsuario) {
-									System.out.println("\n"+mensaje.getFechaHora() + "\n\t"+ mensaje.getMensaje());
-								}
-							}else {
-								System.out.println("No existen mensajes registrados por el usuario "+nombreUsuario);
-							}
-						}
-					}
-
-				} while (!Validar.validarNombreUsuario(nombreUsuario) || !svCredenciales.existeUsuario(nombreUsuario));
-				break;
-				
-			case 3:
-				// buscar mensajes por fecha
-				System.out.println("*** Mensajes por fecha ***");
-				
-				String fecha1 = "";
-				String fecha2 = "";
-				LocalDateTime fechaHora1 = null;
-				LocalDateTime fechaHora2 = null;
-				LocalDateTime fechaHoraActual = LocalDateTime.now();
-				
-				do {
-					System.out.print("Introduce una fecha inicial en formato dd/mm/yyyy: ");
-			        fecha1 = scanner.nextLine();
-			   
-			        fechaHora1 = Validar.validarYConvertirFechaInicio(fecha1);
-			        
-			        if (fechaHora1 == null) {
-			            System.err.println("\nLa fecha introducida no es válida.");
-			            
-			        }else if(fechaHora1.isAfter(fechaHoraActual)){   	
-			        	System.err.println("\nLa fecha introducida no puede superar la fecha actual.");
-			        	
-			        }else {
-			        	break;
-			        }
-				} while (true);
-				
-				do {
-					System.out.print("Introduce una fecha final en formato dd/mm/yyyy: ");
-					fecha2 = scanner.nextLine();
-					
-			        fechaHora2 = Validar.validarYConvertirFechaFin(fecha2);
-			        
-			        if (fechaHora2 == null) {
-			            System.err.println("\nLa fecha introducida no es válida.");
-			            
-			        }else if(fechaHora2.isAfter(fechaHoraActual)){   	
-			        	System.err.println("\nLa fecha introducida no puede superar la fecha actual.");
-			        } else if(!fechaHora1.isBefore(fechaHora2)){
-			        	System.err.println("\nLa fecha introducida no puede ser anterior a la fecha inicial.");
-			        }else {
-			        	fechaHora2.plusHours(24);
-			        	break;
-			        }
-			        
-				} while (true);
-				
-				ArrayList<Mensaje> mensajesFecha = svMensaje.getMensajesFecha(fechaHora1, fechaHora2);
-				if(!mensajesFecha.isEmpty()) {
-					System.out.println("Mensajes registrados entre el "+fechaHora1+ " y el "+fechaHora2+":");
-					for (Mensaje mensajeFecha : mensajesFecha) {
-						System.out.println("\n"+ Validar.formatoFecha(mensajeFecha.getFechaHora()) + " "+svEjemplar.getEjemplarPorId(mensajeFecha.getIdEjemplar()) +"\n\t"+ mensajeFecha.getMensaje());
-					}
-				}else {
-					System.out.println("No hay mensajes registrados en ese rango de fechas.");
-				}
-				
-				
-				break;
-			case 4:
-				// buscar mensajes por tipo planta
-				System.out.println("*** Mensajes por tipo de planta ***");
-				List<Planta> plantas = svPlanta.mostrarPlantas();
-				if (!plantas.isEmpty()) {
-
-					System.out.println("Plantas existentes en el vivero:");
-					for (int i = 0; i < plantas.size(); i++) {
-						System.out.println(i + 1 + ". " + plantas.get(i).getNombreComun());
-					}
-					
-					int numPlanta = 0;
-					int finPlantas = plantas.size();
-					do {
-						System.out.println("Introduce el número de planta de la que quieres ver los mensajes.");
-						try {
-							numPlanta = scanner.nextInt();
-							scanner.nextLine();
-						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
-							scanner.nextLine();
-						}
-
-						if (numPlanta > finPlantas || numPlanta < 0) {
-							System.err.println("Debes introducir un número entre 1 y " + finPlantas);
-							continue;
-						} else {
-							break;
-						}
-
-					} while (true);
-					
-					ArrayList<Mensaje> mensajesPlanta = svMensaje.getMensajesPorPlanta(plantas.get(numPlanta-1));
-					if(!mensajesPlanta.isEmpty()) {
-						for(Mensaje mensajePlanta : mensajesPlanta) {
-							System.out.println("\n"+ Validar.formatoFecha(mensajePlanta.getFechaHora()) + " "+svEjemplar.getEjemplarPorId(mensajePlanta.getIdEjemplar()) +"\n\t"+ mensajePlanta.getMensaje());
-						}
-					} else {
-						System.out.println("No hay mensajes registrados para este tipo de planta");
-					}
-					
-				} else {
-					System.out.println("No hay plantas registradas en el vivero");
-				}
-				break;
-
-			case 5:
-				return;
-
-			default:
-				System.out.println("Opción incorrecta.");
-			}
-		} while (opcion != 5);
 
 	}
 
+	
 	public void cerrarScanner() {
 		if (scanner != null) {
 			scanner.close(); // Cierra el Scanner cuando se termina de usar

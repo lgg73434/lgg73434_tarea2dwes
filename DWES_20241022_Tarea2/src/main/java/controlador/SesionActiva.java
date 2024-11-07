@@ -2,14 +2,12 @@ package controlador;
 
 public class SesionActiva {
 
-	private static SesionActiva sesion;
 	private String usuario;
 	
-	public static SesionActiva getSesionActiva() {
-		if (sesion == null)
-			sesion = new SesionActiva();
-		return sesion;
+	public SesionActiva(String usu) {
+		this.usuario = usu;
 	}
+
 
 	public String getUsuario() {
 		return usuario;
@@ -18,6 +16,13 @@ public class SesionActiva {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
+
+
+	@Override
+	public String toString() {
+		return "SesionActiva [usuario=" + usuario + "]";
+	}
+	
 	
 	
 }
