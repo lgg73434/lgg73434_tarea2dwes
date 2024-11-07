@@ -1,5 +1,6 @@
 package controlador;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import conexionBD.ConexionBD;
@@ -33,6 +34,13 @@ public class ServiciosMensaje {
 	public ArrayList<Mensaje> getMensajesPorPlanta(Planta planta) {
 		return mensajeDao.getMensajesPorPlanta(planta);
 	}
+
+	public ArrayList<Mensaje> getMensajesFecha(LocalDateTime fechaHora1, LocalDateTime fechaHora2) {
+		return mensajeDao.getMensajesPorFecha(fechaHora1, fechaHora2);
+	}
+
+
+
 
 }
 

@@ -72,7 +72,7 @@ public class ViveroFachada {
 			case 2:
 				boolean valido = false;
 				do {
-					System.out.print("Introduce tu usuario: ");
+					System.out.print("\nIntroduce tu usuario: ");
 					String usuario = scanner.nextLine();
 					System.out.print("Introduce tu contraseña: ");
 					String contrasena = scanner.nextLine();
@@ -80,7 +80,7 @@ public class ViveroFachada {
 					if (svCredenciales.login(usuario, contrasena)) {
 						valido = true;
 						sesion.setUsuario(usuario);
-
+						System.out.println("\n¡Hola "+sesion.getUsuario()+"!");
 						if (usuario.equalsIgnoreCase("admin")) {
 							mostrarMenuAdministrador(sesion);
 						} else {
@@ -88,7 +88,7 @@ public class ViveroFachada {
 						}
 
 					} else {
-						System.err.println("\nUsuario o contraseña incorrectos\n");
+						System.err.println("\nUsuario o contraseña incorrectos.");
 					}
 				} while (!valido);
 
@@ -107,6 +107,7 @@ public class ViveroFachada {
 
 	public void mostrarMenuPersonal(SesionActiva s) {
 
+		
 		int opcion = 0;
 		do {
 			System.out.println("\nSeleccione una opción:");
@@ -733,6 +734,60 @@ public class ViveroFachada {
 				
 			case 3:
 				// buscar mensajes por fecha
+				System.out.println("*** Mensajes por fecha ***");
+				
+				String fecha1 = "";
+				String fecha2 = "";
+				LocalDateTime fechaHora1 = null;
+				LocalDateTime fechaHora2 = null;
+				LocalDateTime fechaHoraActual = LocalDateTime.now();
+				
+				do {
+					System.out.print("Introduce una fecha inicial en formato dd/mm/yyyy: ");
+			        fecha1 = scanner.nextLine();
+			   
+			        fechaHora1 = Validar.validarYConvertirFechaInicio(fecha1);
+			        
+			        if (fechaHora1 == null) {
+			            System.err.println("\nLa fecha introducida no es válida.");
+			            
+			        }else if(fechaHora1.isAfter(fechaHoraActual)){   	
+			        	System.err.println("\nLa fecha introducida no puede superar la fecha actual.");
+			        	
+			        }else {
+			        	break;
+			        }
+				} while (true);
+				
+				do {
+					System.out.print("Introduce una fecha final en formato dd/mm/yyyy: ");
+					fecha2 = scanner.nextLine();
+					
+			        fechaHora2 = Validar.validarYConvertirFechaFin(fecha2);
+			        
+			        if (fechaHora2 == null) {
+			            System.err.println("\nLa fecha introducida no es válida.");
+			            
+			        }else if(fechaHora2.isAfter(fechaHoraActual)){   	
+			        	System.err.println("\nLa fecha introducida no puede superar la fecha actual.");
+			        } else if(!fechaHora1.isBefore(fechaHora2)){
+			        	System.err.println("\nLa fecha introducida no puede ser anterior a la fecha inicial.");
+			        }else {
+			        	fechaHora2.plusHours(24);
+			        	break;
+			        }
+			        
+				} while (true);
+				
+				ArrayList<Mensaje> mensajesFecha = svMensaje.getMensajesFecha(fechaHora1, fechaHora2);
+				if(!mensajesFecha.isEmpty()) {
+					System.out.println("Mensajes registrados entre el "+fechaHora1+ " y el "+fechaHora2+":");
+					for (Mensaje mensajeFecha : mensajesFecha) {
+						System.out.println("\n"+ Validar.formatoFecha(mensajeFecha.getFechaHora()) + " "+svEjemplar.getEjemplarPorId(mensajeFecha.getIdEjemplar()) +"\n\t"+ mensajeFecha.getMensaje());
+					}
+				}else {
+					System.out.println("No hay mensajes registrados en ese rango de fechas.");
+				}
 				
 				
 				break;
@@ -771,7 +826,7 @@ public class ViveroFachada {
 					ArrayList<Mensaje> mensajesPlanta = svMensaje.getMensajesPorPlanta(plantas.get(numPlanta-1));
 					if(!mensajesPlanta.isEmpty()) {
 						for(Mensaje mensajePlanta : mensajesPlanta) {
-							System.out.println("\n"+mensajePlanta.getFechaHora() + " "+svEjemplar.getEjemplarPorId(mensajePlanta.getIdEjemplar()) +"\n\t"+ mensajePlanta.getMensaje());
+							System.out.println("\n"+ Validar.formatoFecha(mensajePlanta.getFechaHora()) + " "+svEjemplar.getEjemplarPorId(mensajePlanta.getIdEjemplar()) +"\n\t"+ mensajePlanta.getMensaje());
 						}
 					} else {
 						System.out.println("No hay mensajes registrados para este tipo de planta");
