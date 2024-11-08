@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-11-2024 a las 22:22:05
+-- Tiempo de generación: 08-11-2024 a las 14:19:09
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -46,7 +46,10 @@ CREATE TABLE `credenciales` (
 --
 
 INSERT INTO `credenciales` (`id`, `usuario`, `password`) VALUES
-(1, 'admin', 'admin');
+(1, 'admin', 'admin'),
+(2, 'sara1988', 'sara1988'),
+(3, 'mamerto', 'mamerto'),
+(4, 'gertrudis', 'lagertru');
 
 -- --------------------------------------------------------
 
@@ -65,6 +68,42 @@ CREATE TABLE `ejemplares` (
 --   `idPlanta`
 --       `plantas` -> `codigo`
 --
+
+--
+-- Volcado de datos para la tabla `ejemplares`
+--
+
+INSERT INTO `ejemplares` (`id`, `nombre`, `idPlanta`) VALUES
+(1, 'BAMBU_1', 'BAMBU'),
+(2, 'GIRASOL_2', 'GIRASOL'),
+(3, 'LAVANDA_3', 'LAVANDA'),
+(4, 'LIRIO_4', 'LIRIO'),
+(5, 'ROSA_5', 'ROSA'),
+(6, 'GIRASOL_6', 'GIRASOL'),
+(7, 'GIRASOL_7', 'GIRASOL'),
+(8, 'GIRASOL_8', 'GIRASOL'),
+(9, 'HIBISCO_9', 'HIBISCO'),
+(10, 'HIBISCO_10', 'HIBISCO'),
+(11, 'LIRIO_11', 'LIRIO'),
+(12, 'ROSA_12', 'ROSA'),
+(13, 'LAVANDA_13', 'LAVANDA'),
+(14, 'ORQUIDEA_14', 'ORQUIDEA'),
+(15, 'TULIPAN_15', 'TULIPAN'),
+(16, 'TULIPAN_16', 'TULIPAN'),
+(17, 'ROSA_17', 'ROSA'),
+(18, 'GIRASOL_18', 'GIRASOL'),
+(19, 'HIBISCO_19', 'HIBISCO'),
+(20, 'BAMBU_20', 'BAMBU'),
+(21, 'BAMBU_21', 'BAMBU'),
+(22, 'GIRASOL_22', 'GIRASOL'),
+(23, 'HIBISCO_23', 'HIBISCO'),
+(24, 'LAVANDA_24', 'LAVANDA'),
+(25, 'LIRIO_25', 'LIRIO'),
+(26, 'ORQUIDEA_26', 'ORQUIDEA'),
+(27, 'ROSA_27', 'ROSA'),
+(28, 'TULIPAN_28', 'TULIPAN'),
+(29, 'TULIPAN_29', 'TULIPAN'),
+(30, 'ROSA_30', 'ROSA');
 
 -- --------------------------------------------------------
 
@@ -88,6 +127,50 @@ CREATE TABLE `mensajes` (
 --       `personas` -> `id`
 --
 
+--
+-- Volcado de datos para la tabla `mensajes`
+--
+
+INSERT INTO `mensajes` (`id`, `fechaHora`, `mensaje`, `idPersona`, `idEjemplar`) VALUES
+(1, '2024-11-08 14:04:36', 'Ejemplar registrado por: admin a las 08/11/2024 14:04:36', 1, 1),
+(2, '2024-11-08 14:04:43', 'Ejemplar registrado por: admin a las 08/11/2024 14:04:43', 1, 2),
+(3, '2024-11-08 14:05:27', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:05:27', 2, 3),
+(4, '2024-11-08 14:05:39', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:05:39', 2, 4),
+(5, '2024-11-08 14:05:56', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:05:56', 2, 5),
+(6, '2024-11-08 14:07:11', 'Se escapó un oso panda del vecino y le pegó un bocao', 2, 1),
+(7, '2024-11-08 14:07:46', 'Hoy está más amarillo que ayer', 2, 2),
+(8, '2024-11-08 14:09:54', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:09:54', 3, 6),
+(9, '2024-11-08 14:09:58', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:09:58', 3, 7),
+(10, '2024-11-08 14:10:00', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:10:00', 3, 8),
+(11, '2024-11-08 14:10:04', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:10:04', 3, 9),
+(12, '2024-11-08 14:10:07', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:10:07', 3, 10),
+(13, '2024-11-08 14:10:12', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:10:12', 3, 11),
+(14, '2024-11-08 14:10:15', 'Ejemplar registrado por: mamerto a las 08/11/2024 14:10:15', 3, 12),
+(15, '2024-11-08 14:10:52', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:10:52', 4, 13),
+(16, '2024-11-08 14:10:55', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:10:55', 4, 14),
+(17, '2024-11-08 14:10:58', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:10:58', 4, 15),
+(18, '2024-11-08 14:11:02', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:11:02', 4, 16),
+(19, '2024-11-08 14:11:12', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:11:12', 4, 17),
+(20, '2024-11-08 14:11:17', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:11:17', 4, 18),
+(21, '2024-11-08 14:11:22', 'Ejemplar registrado por: gertrudis a las 08/11/2024 14:11:22', 4, 19),
+(22, '2024-11-08 14:11:43', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:11:43', 2, 20),
+(23, '2024-11-08 14:11:48', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:11:48', 2, 21),
+(24, '2024-11-08 14:11:51', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:11:51', 2, 22),
+(25, '2024-11-08 14:11:54', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:11:54', 2, 23),
+(26, '2024-11-08 14:11:56', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:11:56', 2, 24),
+(27, '2024-11-08 14:12:02', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:02', 2, 25),
+(28, '2024-11-08 14:12:04', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:04', 2, 26),
+(29, '2024-11-08 14:12:06', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:06', 2, 27),
+(30, '2024-11-08 14:12:08', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:08', 2, 28),
+(31, '2024-11-08 14:12:10', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:10', 2, 29),
+(32, '2024-11-08 14:12:19', 'Ejemplar registrado por: sara1988 a las 08/11/2024 14:12:19', 2, 30),
+(33, '2024-11-08 14:14:57', 'Esta rosa es menos rosa que la ROSA_30', 2, 5),
+(34, '2024-11-08 14:15:13', 'Regado hoy', 2, 8),
+(35, '2024-11-08 14:15:37', 'Estaba un poco mustio. Se le añadieron nutrientes', 2, 22),
+(36, '2024-11-08 14:15:51', 'Un hibisco muy hibisco', 2, 23),
+(37, '2024-11-08 14:16:13', 'Ejemplar con un aroma muy intenso', 2, 3),
+(38, '2024-11-08 14:16:45', 'Muy lustroso', 2, 14);
+
 -- --------------------------------------------------------
 
 --
@@ -109,7 +192,10 @@ CREATE TABLE `personas` (
 --
 
 INSERT INTO `personas` (`id`, `nombre`, `email`) VALUES
-(1, 'Admin', 'admin@vivero.es');
+(1, 'Admin', 'admin@vivero.es'),
+(2, 'Sara', 'sara@vivero.com'),
+(3, 'Mamerto', 'mamerto@gmail.com'),
+(4, 'Gertrudis', 'lagertru@hotmail.com');
 
 -- --------------------------------------------------------
 
@@ -132,8 +218,14 @@ CREATE TABLE `plantas` (
 --
 
 INSERT INTO `plantas` (`codigo`, `nombreComun`, `nombreCientifico`) VALUES
-('GIRASOL', 'Girasol', 'Girasolus'),
-('ROSA', 'Rosa', 'Rosaeum');
+('BAMBU', 'Bambú', 'Bambusoideae'),
+('GIRASOL', 'Girasol', 'Helianthus annuus'),
+('HIBISCO', 'Hibisco', 'Hibiscus rosa sinensis'),
+('LAVANDA', 'Lavanda', 'Lavandula angustifolia'),
+('LIRIO', 'Lirio', 'Lilium spp'),
+('ORQUIDEA', 'Orquídea', 'Orchidaceae'),
+('ROSA', 'Rosa', 'Rosa spp'),
+('TULIPAN', 'Tulipán', 'Tulipa spp');
 
 --
 -- Índices para tablas volcadas
@@ -182,19 +274,19 @@ ALTER TABLE `plantas`
 -- AUTO_INCREMENT de la tabla `ejemplares`
 --
 ALTER TABLE `ejemplares`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajes`
 --
 ALTER TABLE `mensajes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
