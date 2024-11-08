@@ -39,7 +39,7 @@ public class ServiciosCredenciales {
 	        propiedades.load(inputStream);
 	        
 	        // Comparamos con las credenciales del archivo de propiedades
-	        if (usuario.equals(propiedades.getProperty("usuario")) && contrasena.equals(propiedades.getProperty("passAdmin"))) {
+	        if (usuario.equalsIgnoreCase(propiedades.getProperty("usuario")) && contrasena.equalsIgnoreCase(propiedades.getProperty("passAdmin"))) {
 	            valido = true;
 	        }
 	        

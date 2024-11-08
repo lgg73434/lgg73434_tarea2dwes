@@ -18,7 +18,10 @@ public class MenuPlantas {
 
 		int opcion = 0;
 		do {
-			System.out.println("\nSeleccione una opción:");
+			System.out.println("\n-----------------------------");
+			System.out.println("**    Gestionar plantas    **");
+			System.out.println("-----------------------------");
+			System.out.println("Seleccione una opción:");
 			System.out.println("1.  Registrar planta");
 			System.out.println("2.  Modificar planta");
 			System.out.println("3.  Volver atrás");
@@ -27,14 +30,16 @@ public class MenuPlantas {
 				opcion = scanner.nextInt();
 				scanner.nextLine();
 			} catch (InputMismatchException e) {
-				System.err.println("Opción no válida. Por favor, introduce un número entero.");
+				System.err.println("Opción no válida. Debes introducir un número entero.");
 				scanner.nextLine();
 				continue; // Volver a pedir la opción
 			}
 
 			switch (opcion) {
 			case 1:
-				System.out.println("*** Registrar nueva planta ***\n");
+				System.out.println("\n------------------------------");
+				System.out.println("**   Registrar una planta   **");
+				System.out.println("------------------------------");
 
 				String codigo = "";
 				String nombreComun = "";
@@ -73,7 +78,7 @@ public class MenuPlantas {
 					nombreCientifico = scanner.nextLine();
 
 					if (!Validar.validarNombre(nombreCientifico)) {
-						System.err.println("Introducidos caracteres no válidos en el nombre común.");
+						System.err.println("Introducidos caracteres no válidos en el nombre científico.");
 					}
 
 				} while (!Validar.validarNombre(nombreCientifico));
@@ -90,15 +95,19 @@ public class MenuPlantas {
 
 			case 2:
 
-				System.out.println("*** Modificar datos de una planta ***\n");
+				System.out.println("\n------------------------------");
+				System.out.println("**   Modificar una planta   **");
+				System.out.println("------------------------------");
 
 				if (!svPlanta.mostrarPlantas().isEmpty()) {
-					System.out.println("Plantas registradas en el vivero:");
+					System.out.println("______ Plantas registradas en el vivero ______");
 
 					for (int i = 0; i < svPlanta.mostrarPlantas().size() && !svPlanta.mostrarPlantas().isEmpty(); i++) {
 						System.out.println(i + 1 + ". " + svPlanta.mostrarPlantas().get(i).getNombreComun());
 					}
 
+					System.out.println("\n");
+					
 					int numFinalLista = svPlanta.mostrarPlantas().size();
 					int numPlanta = 0;
 					do {
@@ -114,7 +123,7 @@ public class MenuPlantas {
 								Planta planta = svPlanta.mostrarPlantas().get(numPlanta - 1);
 
 								do {
-									System.out.println("Introduce el nombre común de la planta: ");
+									System.out.println("Introduce el nuevo nombre común de la planta: ");
 									nombreComun = scanner.nextLine();
 
 									if (!Validar.validarNombre(nombreComun)) {
@@ -123,11 +132,11 @@ public class MenuPlantas {
 								} while (!Validar.validarNombre(nombreComun));
 
 								do {
-									System.out.println("Introduce el nombre científico de la planta:");
+									System.out.println("Introduce el nuevo nombre científico de la planta:");
 									nombreCientifico = scanner.nextLine();
 
 									if (!Validar.validarNombre(nombreCientifico)) {
-										System.err.println("Introducidos caracteres no válidos en el nombre común.");
+										System.err.println("Introducidos caracteres no válidos en el nombre científico.");
 									}
 								} while (!Validar.validarNombre(nombreCientifico));
 
@@ -137,11 +146,11 @@ public class MenuPlantas {
 								if (svPlanta.actualizarPlanta(planta) > 0) {
 									System.out.println("Planta actualizada correctamente.");
 								} else {
-									System.err.println("Error al actualizar la planta.");
+									System.err.println("Error al actualizar los datos de la planta.");
 								}
 							}
 						} catch (InputMismatchException e) {
-							System.err.println("Debes introducir un número");
+							System.err.println("Debes introducir un número entero.");
 							scanner.nextLine();
 						}
 					} while (numPlanta < 1 || numPlanta > numFinalLista);

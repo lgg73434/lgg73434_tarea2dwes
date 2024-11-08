@@ -51,7 +51,11 @@ public class ViveroFachada {
 
 		int opcion = 0;
 		do {
-			System.out.println("\nSeleccione una opción:");
+			System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+			System.out.println("-------------------------------");
+			System.out.println("      ¿Qué quieres hacer?");
+			System.out.println("-------------------------------");
+			System.out.println("Selecciona una opción:");
 			System.out.println("1.  Ver plantas (Modo invitado)");
 			System.out.println("2.  Login");
 			System.out.println("3.  Salir");
@@ -60,7 +64,7 @@ public class ViveroFachada {
 				opcion = scanner.nextInt();
 				scanner.nextLine();
 			} catch (InputMismatchException e) {
-				System.err.println("Opción no válida. Se debe introducir un número entero.");
+				System.err.println("Opción no válida. Debes introducir un número entero.");
 				scanner.next(); // Limpiar el buffer de entrada
 				continue; // Volver a pedir la opción
 			}
@@ -69,11 +73,11 @@ public class ViveroFachada {
 			case 1:
 				List<Planta> plantas = svPlanta.mostrarPlantas();
 				if (plantas.isEmpty()) {
-					System.out.println("No hay plantas registradas.");
+					System.out.println("Aún o hay plantas registradas en el vivero.");
 				} else {
-					System.out.println("Plantas registradas");
+					System.out.println("\n______ Plantas registradas en el vivero ______");
 					for (int i = 0; i < plantas.size(); i++) {
-						System.out.println((i + 1) + ". "+ plantas.get(i).getNombreComun() +"\tNombre científico: "+ plantas.get(i).getNombreCientifico());
+						System.out.println((i + 1) + ". "+ plantas.get(i).getNombreComun() +" - "+ plantas.get(i).getNombreCientifico());
 					}
 				}
 				break;
@@ -81,6 +85,7 @@ public class ViveroFachada {
 			case 2:
 				boolean valido = false;
 				do {
+					
 					System.out.print("\nIntroduce tu usuario: ");
 					String usuario = scanner.nextLine();
 					System.out.print("Introduce tu contraseña: ");
@@ -89,7 +94,9 @@ public class ViveroFachada {
 					if (svCredenciales.login(usuario, contrasena)) {
 						valido = true;
 						sesion.setUsuario(usuario);
-						System.out.println("\n¡Hola "+sesion.getUsuario()+"!");
+						System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+						System.out.println("\t¡Hola "+sesion.getUsuario()+"!");
+						System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 						if (usuario.equalsIgnoreCase("admin")) {
 							mostrarMenuAdministrador();
 						} else {
@@ -120,7 +127,10 @@ public class ViveroFachada {
 		int opcion = 0;
 
 		do {
-			System.out.println("\nSeleccione una opción:");
+			System.out.println("\n-----------------------------");
+			System.out.println("     ¿Qué quieres hacer?");
+			System.out.println("-----------------------------");
+			System.out.println("Selecciona una opción:");
 			System.out.println("1.  Gestionar plantas");
 			System.out.println("2.  Gestionar ejemplares");
 			System.out.println("3.  Gestionar mensajes");
@@ -152,8 +162,9 @@ public class ViveroFachada {
 				break;
 
 			case 4:
-
-				System.out.println("*** Registrar nuevo usuario ***");
+				System.out.println("\n-----------------------------");
+				System.out.println("** Registrar nuevo usuario **");
+				System.out.println("-----------------------------");
 
 				String nombre = "";
 				String email = "";
@@ -191,7 +202,7 @@ public class ViveroFachada {
 				} while (true);
 
 				do {
-					System.out.println("Introduce nombre de usuario:");
+					System.out.println("Introduce un nombre de usuario:");
 					nombreUsuario = scanner.nextLine();
 
 					if (!Validar.validarNombreUsuario(nombreUsuario)) {
@@ -214,7 +225,7 @@ public class ViveroFachada {
 
 					if (!Validar.validarContrasena(contrasena)) {
 						System.err.println(
-								"La contraseña debe tener entre 6 y 10 caracteres y no puede contener espacios.");
+								"La contraseña debe tener entre 6 y 10 caracteres (letras y/o números).");
 					} else {
 						break;
 					}
@@ -222,9 +233,10 @@ public class ViveroFachada {
 				} while (true);
 
 				if (svPersona.registrarPersona(nombre, email, nombreUsuario, contrasena)) {
-					System.out.println("Nuevo usuario registrado con éxito");
+					System.out.println("Nuevo usuario registrado con éxito\n");
+					
 				} else {
-					System.err.println("Error al registrar al nuevo usuario.");
+					System.err.println("Error al registrar al nuevo usuario.\n");
 				}
 				break;
 
@@ -248,7 +260,10 @@ public class ViveroFachada {
 
 		int opcion = 0;
 		do {
-			System.out.println("\nSeleccione una opción:");
+			System.out.println("\n-----------------------------");
+			System.out.println("     ¿Qué quieres hacer?");
+			System.out.println("-----------------------------");
+			System.out.println("Seleccione una opción:");
 			System.out.println("1.  Gestionar ejemplares");
 			System.out.println("2.  Gestionar mensajes");
 			System.out.println("3.  Cerrar sesión");
