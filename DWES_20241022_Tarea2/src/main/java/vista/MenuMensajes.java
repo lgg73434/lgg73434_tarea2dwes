@@ -36,6 +36,28 @@ public class MenuMensajes {
 	ServiciosCredenciales svCredenciales = serviciosControlador.getServiciosCredenciales();
 	ServiciosMensaje svMensaje = serviciosControlador.getServiciosMensaje();
 
+	
+	/**
+	 * Muestra el menú de opciones para gestionar los mensajes en el sistema.
+	 * Permite al administrador crear nuevos mensajes, buscar mensajes por usuario,
+	 * fecha o tipo de planta, o volver al menú anterior.
+	 * 
+	 * Las opciones disponibles en el menú son:
+	 * 1. Crear nuevo mensaje: Permite al administrador seleccionar un ejemplar y crear un mensaje
+	 *    asociado a dicho ejemplar.
+	 * 2. Buscar mensajes por usuario: Permite al administrador buscar y mostrar los mensajes
+	 *    creados por un usuario específico.
+	 * 3. Buscar mensajes por fecha: Permite al administrador buscar y mostrar los mensajes registrados
+	 *    dentro de un rango de fechas.
+	 * 4. Buscar mensajes por tipo de planta: Permite al administrador buscar los mensajes asociados
+	 *    a un tipo de planta registrado en el sistema.
+	 * 5. Volver atrás: Regresa al menú anterior.
+	 * 
+	 * El método gestiona la entrada del usuario y realiza las acciones correspondientes según
+	 * la opción seleccionada. Se validan los datos de entrada como el número de ejemplar, nombre
+	 * de usuario y fechas, y se muestran los resultados de las búsquedas de mensajes basadas
+	 * en los criterios seleccionados.
+	 */
 	public void mostrarMenuGestionarMensajes() {
 
 		int opcion = 0;
@@ -121,6 +143,7 @@ public class MenuMensajes {
 					System.out.println("Aún no hay ejemplares registrados en el vivero");
 				}
 				break;
+								
 			case 2:
 				System.out.println("\n-------------------------------");
 				System.out.println("**   Mensajes por usuario    **");
@@ -214,6 +237,7 @@ public class MenuMensajes {
 				}
 
 				break;
+				
 			case 4:
 				System.out.println("\n-----------------------------------");
 				System.out.println("**  Mensajes por tipo de planta  **");

@@ -36,6 +36,25 @@ public class MenuEjemplares {
 	ServiciosMensaje svMensaje = serviciosControlador.getServiciosMensaje();
 	ServiciosPersona svPersona = serviciosControlador.getServiciosPersona();
 
+	
+	/**
+	 * Muestra el menú de opciones para gestionar los ejemplares en el sistema.
+	 * Permite al administrador registrar nuevos ejemplares, ver los ejemplares de una planta,
+	 * ver los mensajes de seguimiento de un ejemplar o volver al menú anterior.
+	 * 
+	 * Las opciones disponibles en el menú son:
+	 * 1. Registrar un nuevo ejemplar: Permite al administrador registrar un nuevo ejemplar
+	 *    asociado a una planta existente en el vivero.
+	 * 2. Ver ejemplares de una planta: Permite al administrador consultar los ejemplares de una
+	 *    o más plantas registradas en el sistema.
+	 * 3. Ver mensajes de seguimiento de un ejemplar: Permite al administrador consultar los mensajes
+	 *    de seguimiento asociados a un ejemplar específico.
+	 * 4. Volver atrás: Regresa al menú anterior.
+	 * 
+	 * El método gestiona la entrada del usuario y realiza las acciones correspondientes según
+	 * la opción seleccionada. Se validan los datos de entrada como el número de ejemplar y planta,
+	 * y se muestran los resultados de las búsquedas de ejemplares y mensajes de seguimiento.
+	 */
 	public void mostrarMenuGestionarEjemplares() {
 
 		int opcion = 0;
@@ -157,7 +176,7 @@ public class MenuEjemplares {
 					if (!plantasElegidas.isEmpty()) {
 						for (int a = 0; a < plantasElegidas.size(); a++) {
 							System.out.println(
-									"\n\t\t*-*- Ejemplares de " + plantasElegidas.get(a).getNombreComun() + " -*-*");
+									"\n\n\t\t*-*- Ejemplares de " + plantasElegidas.get(a).getNombreComun() + " -*-*");
 							ArrayList<Ejemplar> ejemplares = svEjemplar.mostrarEjemplaresPlanta(plantasElegidas.get(a));
 
 							if (!ejemplares.isEmpty()) {

@@ -17,19 +17,23 @@ public class ServiciosEjemplar {
 		ejemplarDao = conexion.getEjemplarDao();
 	}
 	
+	
 	public Ejemplar crearEjemplar (Planta p) {
 		return ejemplarDao.crearEjemplar(p);
 	}
 
+	
 	public ArrayList<Ejemplar> mostrarEjemplaresPlanta(Planta planta) {
 		return ejemplarDao.listarEjemplaresPlanta(planta);
 		
 	}
 
+	
 	public ArrayList<Ejemplar> mostrarEjemplares() {
 		return ejemplarDao.listarEjemplares();
 	}
 
+	
 	public String getEjemplarPorId(Long idEjemplar) {
 		return ejemplarDao.getNombreEjemplar(idEjemplar);
 	}

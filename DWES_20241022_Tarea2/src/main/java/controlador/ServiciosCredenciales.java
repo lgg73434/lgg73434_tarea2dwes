@@ -39,7 +39,7 @@ public class ServiciosCredenciales {
 	        propiedades.load(inputStream);
 	        
 	        // Comparamos con las credenciales del archivo de propiedades
-	        if (usuario.equalsIgnoreCase(propiedades.getProperty("usuario")) && contrasena.equalsIgnoreCase(propiedades.getProperty("passAdmin"))) {
+	        if (usuario.equalsIgnoreCase(propiedades.getProperty("usuario")) && contrasena.equals(propiedades.getProperty("passAdmin"))) {
 	            valido = true;
 	        }
 	        
@@ -49,6 +49,7 @@ public class ServiciosCredenciales {
 
 	    return valido;
 	}
+	
 	
 	
 	public Long getIdCredenciales(String usuario) {
@@ -61,6 +62,7 @@ public class ServiciosCredenciales {
 		
 	}
 
+	
 	public boolean existeUsuario(String nombreUsuario) {
 		if (credencialesDao.isUsuarioRegistrado(nombreUsuario)) {
 			return true;

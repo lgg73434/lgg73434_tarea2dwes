@@ -19,8 +19,6 @@ public class ViveroFachada {
 
 	SesionActiva sesion = new SesionActiva ("");
 	
-
-
 	Controlador serviciosControlador = Controlador.getServicios();
 
 	ServiciosPlanta svPlanta = serviciosControlador.getServiciosPlanta();
@@ -34,19 +32,38 @@ public class ViveroFachada {
 	MenuMensajes menuMensajes = new MenuMensajes (sesion);
 	
 
-
 	public static ViveroFachada getPortal() {
 		if (portalVivero == null)
 			portalVivero = new ViveroFachada();
 		return portalVivero;
 	}
 
+	
+	/**
+	 * Inicia el programa mostrando un mensaje de bienvenida y luego muestra el menú principal.
+	 * Después de ejecutar las acciones, cierra el scanner.
+	 */
 	public void iniciarPrograma() {
 		System.out.println("*** ¡¡Bienvenido a Vivero GestionApp!! ***");
 		mostrarMenuPrincipal();
 		scanner.close();
 	}
 
+	
+	/**
+	 * Muestra el menú principal del programa y gestiona las opciones seleccionadas por el usuario.
+	 * Ofrece tres opciones:
+	 * 1. Ver plantas (Modo invitado).
+	 * 2. Iniciar sesión con usuario y contraseña.
+	 * 3. Salir del programa.
+	 * 
+	 * El método permite al usuario interactuar con el programa mediante un ciclo que valida la entrada
+	 * y ejecuta acciones correspondientes a cada opción. Si se selecciona la opción de inicio de sesión,
+	 * se valida el usuario y la contraseña, y en caso de éxito, muestra el menú adecuado según el rol del usuario.
+	 * 
+	 * Si el usuario selecciona la opción 1, se muestran las plantas registradas en el vivero.
+	 * En caso de seleccionar una opción no válida, el programa muestra un mensaje de error.
+	 */
 	public void mostrarMenuPrincipal() {
 
 		int opcion = 0;
@@ -93,10 +110,10 @@ public class ViveroFachada {
 
 					if (svCredenciales.login(usuario, contrasena)) {
 						valido = true;
-						sesion.setUsuario(usuario);
-						System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+						sesion.setUsuario(usuario.toLowerCase());
+						System.out.println("\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 						System.out.println("\t¡Hola "+sesion.getUsuario()+"!");
-						System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+						System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
 						if (usuario.equalsIgnoreCase("admin")) {
 							mostrarMenuAdministrador();
 						} else {
@@ -122,6 +139,23 @@ public class ViveroFachada {
 	}
 
 
+	/**
+	 * Muestra el menú de opciones para el administrador del sistema, permitiéndole gestionar diversas áreas
+	 * del sistema, tales como plantas, ejemplares, mensajes y usuarios.
+	 * 
+	 * Las opciones disponibles en el menú son:
+	 * 1. Gestionar plantas: Permite al administrador gestionar las plantas registradas.
+	 * 2. Gestionar ejemplares: Permite al administrador gestionar los ejemplares de plantas.
+	 * 3. Gestionar mensajes: Permite al administrador gestionar los mensajes relacionados con las plantas y ejemplares.
+	 * 4. Registrar nuevo usuario: Permite al administrador registrar un nuevo usuario en el sistema, validando los campos
+	 *    como nombre, email, nombre de usuario y contraseña antes de realizar el registro.
+	 * 5. Cerrar sesión: Permite al administrador cerrar sesión en el sistema.
+	 * 6. Cerrar sesión y salir: Permite al administrador cerrar sesión y salir del programa.
+	 * 
+	 * El método controla las opciones seleccionadas por el administrador, validando la entrada y realizando las
+	 * acciones correspondientes. Si se selecciona la opción 4 para registrar un usuario, se solicita la información necesaria
+	 * al administrador y se validan los datos antes de intentar registrar al nuevo usuario en el sistema.
+	 */
 	public void mostrarMenuAdministrador() {
 
 		int opcion = 0;
@@ -153,7 +187,6 @@ public class ViveroFachada {
 				break;
 
 			case 2:
-			
 				menuEjemplares.mostrarMenuGestionarEjemplares();
 				break;
 
@@ -206,7 +239,7 @@ public class ViveroFachada {
 					nombreUsuario = scanner.nextLine();
 
 					if (!Validar.validarNombreUsuario(nombreUsuario)) {
-						System.err.println("El nombre de usuario no puede contener espacios.");
+						System.err.println("El nombre de usuario solo puede contener letras y/o números.");
 					}
 
 					if (svCredenciales.existeUsuario(nombreUsuario)) {
@@ -256,6 +289,20 @@ public class ViveroFachada {
 	}
 	
 	
+	/**
+	 * Muestra el menú de opciones para un usuario personal del sistema, permitiéndole gestionar diversas áreas
+	 * relacionadas con su cuenta y acciones asociadas.
+	 * 
+	 * Las opciones disponibles en el menú son:
+	 * 1. Gestionar ejemplares: Permite al usuario gestionar los ejemplares de plantas.
+	 * 2. Gestionar mensajes: Permite al usuario gestionar los mensajes relacionados con las plantas o ejemplares.
+	 * 3. Cerrar sesión: Permite al usuario cerrar sesión en el sistema y regresar al menú principal.
+	 * 4. Cerrar sesión y salir: Permite al usuario cerrar sesión y salir del programa.
+	 * 
+	 * El método gestiona la entrada del usuario, realizando la acción correspondiente según la opción seleccionada. 
+	 * Si se selecciona la opción 3 o 4, se cerrará la sesión del usuario. La opción 4 también finalizará la ejecución
+	 * del programa.
+	 */
 	public void mostrarMenuPersonal() {
 
 		int opcion = 0;

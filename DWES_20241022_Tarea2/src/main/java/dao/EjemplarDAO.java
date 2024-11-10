@@ -19,6 +19,15 @@ public class EjemplarDAO {
 		this.connection = connection;
 	}
 
+	
+	/**
+	 * Registra un nuevo ejemplar en la base de datos.
+	 * 
+	 * @param String : nombre = nombre del ejemplar a insertar.
+	 * @param String : idPlanta = identificador de la planta asociada al ejemplar.
+	 * @return int que indica el resultado de la operación: 1 si la inserción fue exitosa, 0 en caso contrario.
+	 * @throws SQLException si ocurre un error durante la ejecución de la consulta SQL.
+	 */
 	public int registrarEjemplar(String nombre, String idPlanta) {
 		int result = 0;
 		
@@ -37,26 +46,36 @@ public class EjemplarDAO {
         
 	}
 	
+	
+	/**
+	 * Crea un nuevo ejemplar en la base de datos basado en una planta dada, asignando un nombre único 
+	 * generado automáticamente que combina el código de la planta con el ID generado del ejemplar.
+	 * 
+	 * @param Planta : p = objeto Planta con la información necesaria para crear el ejemplar.
+	 * @return Ejemplar con el ID y nombre asignados si la creación fue exitosa, 
+	 * 		   o null en caso contrario.
+	 * @throws SQLException si ocurre un error durante la ejecución de las consultas SQL.
+	 */
 	public Ejemplar crearEjemplar(Planta p){
 		Ejemplar e=null;
         String insertSQL = "INSERT INTO ejemplares (nombre, idPlanta) VALUES (?, ?)";
         String updateSQL = "UPDATE ejemplares SET nombre = ? WHERE id = ?";
 
-        // Auto-generated keys nos permitirá recuperar el ID generado
+        // Auto-generated keys permite recuperar el ID generado
         try (PreparedStatement ps = connection.prepareStatement(insertSQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
             
-            // Paso 1: Insertamos el ejemplar solo con el id_planta
+            // Paso 1: Insertar el ejemplar solo con el id_planta
             ps.setString(1, p.getCodigo());
             ps.setString(2, p.getCodigo());
             ps.executeUpdate();
 
-            // Paso 2: Recuperamos el ID generado automáticamente
+            // Paso 2: Recuperar el ID generado automáticamente
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     Long ejemplarId = generatedKeys.getLong(1);  // Obtiene el ID generado
                     String nombreEjemplar = p.getCodigo() + "_" + ejemplarId;
 
-                    // Paso 3: Actualizamos el nombre del ejemplar con el id_planta y el id del ejemplar
+                    // Paso 3: Actualizar el nombre del ejemplar con el id_planta y el id del ejemplar
                     try (PreparedStatement ups = connection.prepareStatement(updateSQL)) {
                         ups.setString(1, nombreEjemplar);
                         ups.setLong(2, ejemplarId);
@@ -72,7 +91,16 @@ public class EjemplarDAO {
 		}
         return e;
 	}
-
+	
+	
+	/**
+	 * Lista todos los ejemplares asociados a una planta específica en la base de datos.
+	 * 
+	 * @param Planta : planta = objeto Planta cuyo código se usará para buscar sus ejemplares.
+	 * @return ArrayList<Ejemplar> con los ejemplares encontrados, 
+	 * 		   o una lista vacía si no hay resultados.
+	 * @throws SQLException si ocurre un error durante la ejecución de la consulta SQL.
+	 */
 	public ArrayList<Ejemplar> listarEjemplaresPlanta(Planta planta) {
 		String sql = "SELECT * FROM ejemplares WHERE idPlanta = ?";
 		ArrayList<Ejemplar> resul = new ArrayList<Ejemplar>();
@@ -98,6 +126,14 @@ public class EjemplarDAO {
 		return resul;
 	}
 
+	
+	/**
+	 * Lista todos los ejemplares en la base de datos, ordenados por nombre.
+	 * 
+	 * @return ArrayList<Ejemplar> con todos los ejemplares registrados, 
+	 * 		   o una lista vacía si no hay resultados.
+	 * @throws SQLException si ocurre un error durante la ejecución de la consulta SQL.
+	 */
 	public ArrayList<Ejemplar> listarEjemplares() {
 		String sql = "SELECT * FROM ejemplares ORDER BY nombre";
 		ArrayList<Ejemplar> resul = new ArrayList<Ejemplar>();
@@ -120,6 +156,15 @@ public class EjemplarDAO {
 		return resul;
 	}
 
+	
+	/**
+	 * Obtiene el nombre de un ejemplar a partir de su ID.
+	 * 
+	 * @param Long : idEjemplar = ID del ejemplar del que queremos obtener su nombre.
+	 * @return String con el nombre del ejemplar, 
+	 * 		   o una cadena vacía si no se encuentra el ejemplar.
+	 * @throws SQLException si ocurre un error durante la ejecución de la consulta SQL.
+	 */
 	public String getNombreEjemplar(Long idEjemplar) {
 		String sql = "SELECT nombre FROM ejemplares WHERE id = ?";
 		String nombreEjemplar = "";

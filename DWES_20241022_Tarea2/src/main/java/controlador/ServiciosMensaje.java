@@ -19,22 +19,27 @@ public class ServiciosMensaje {
 		mensajeDao = conexion.getMensajeDao();	
 	}
 	
+	
 	public int crearMensaje(Mensaje m) {
 		return mensajeDao.insertarMensaje(m);
 	}
 
+	
 	public ArrayList<Mensaje> getMensajesPorEjemplar(Ejemplar ejemplar) {
 		return mensajeDao.getMensajesPorEjemplar(ejemplar);
 	}
 
+	
 	public ArrayList<Mensaje> getMensajesPorUsuario(Long idUsuario) {
 		return mensajeDao.getMensajesPorUsuario(idUsuario);
 	}
 
+	
 	public ArrayList<Mensaje> getMensajesPorPlanta(Planta planta) {
 		return mensajeDao.getMensajesPorPlanta(planta);
 	}
 
+	
 	public ArrayList<Mensaje> getMensajesFecha(LocalDateTime fechaHora1, LocalDateTime fechaHora2) {
 		return mensajeDao.getMensajesPorFecha(fechaHora1, fechaHora2);
 	}

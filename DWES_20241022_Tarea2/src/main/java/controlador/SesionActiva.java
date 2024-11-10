@@ -13,6 +13,7 @@ public class SesionActiva {
 		return usuario;
 	}
 
+	
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}

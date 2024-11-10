@@ -28,6 +28,7 @@ public class ServiciosPersona {
 		return false;
 	}
 
+	
 	public boolean registrarPersona(String nombre, String email, String nombreUsuario, String contrasena) {
 			int idPersona = personaDao.insertarPersona(nombre, email, nombreUsuario, contrasena);
 			if(idPersona != -1) {
@@ -40,6 +41,7 @@ public class ServiciosPersona {
 	        return false; 
 	       
 	}
+	
 	
 	public Persona getPersonaporID (Long id) {
 		return personaDao.obtenerPersonaPorId(id);
